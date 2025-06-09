@@ -13,7 +13,8 @@
 > 애플리케이션 아키텍처 구조 작성, 서비스 정보 작성
 > 
 
-![슬라이드1.JPG.png](attachment:2b33fd8f-28e4-48c5-9368-4a533ad2d933:슬라이드1.JPG.png)
+![슬라이드1.JPG.png](https://github.com/user-attachments/assets/f4b11f38-3385-4749-b78f-3af00e3aee7f)
+
 
 | 유형 | 구분 | 서비스 정보 |
 | --- | --- | --- |
