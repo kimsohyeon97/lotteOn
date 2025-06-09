@@ -140,6 +140,6 @@ src/
 
 ```
 
-## 프로젝트 결과 보고서
+## 프로젝트 보고서
 
-[프로젝트 결과 보고서](https://www.notion.so/20a4ffb4f47b8062888ed9a5e6e08602?pvs=21)
+[프로젝트 보고서](https://fish-fahrenheit-662.notion.site/3-2044ffb4f47b8077815cebd4aa81672e?source=copy_link)
