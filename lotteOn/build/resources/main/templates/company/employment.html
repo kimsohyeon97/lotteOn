@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>채용</title>
+    <link rel="stylesheet" href="/css/company/employment.css" />
+  </head>
+  <body>
+    <div id="wrapper">
+      <!-- 헤더 시작 -->
+      <header>
+        <div class="header_main">
+          <div class="logo">
+            <a th:href="@{/}"><img src="/images/logo.png" alt="lotteOn" /></a>
+          </div>
+          <div class="user_menu">
+            <a th:href="@{/company/index}">HOME</a>
+            <a th:href="@{/company/culture}">기업문화</a>
+            <a th:href="@{/company/story}">소식과 이야기</a>
+            <a th:href="@{/company/recruit}" class="active">채용</a>
+            <a th:href="@{/company/media}">미디어</a>
+          </div>
+        </div>
+      </header>
+
+      <!-- 메인 시작 -->
+      <main class="content">
+        <h1>쇼핑을 새롭게, 세상을 이롭게<br>
+           이끌 쇼핑 좀 해 본 인재를 모십니다!</h1>
+
+        <p class="subtitle">롯데ON은 안정성 있고 혁신성 있게 우리의 문화를 만들어가고 있어요.<br>
+          구성원들은 수평적이고 자율적인 문화 속에서 개선을 넘어서 혁신적인 롯데ON만의 서비스를 만들어요.<br>
+          롯데ON과 함께 굵은 점을 찍어가며 성장하실 분들을 기다립니다.
+        </p>
+
+        <div class="notice-container">
+          <div class="location-container">
+            <h2>채용 공고</h2>
+          </div>
+          
+          <ul class="recruit-list">
+            <li th:each="item : ${pageResponseDTO.dtoList}">
+              <a th:href="@{/company/recruit/view(no=${item.no})}" class="recruit-item">
+                <div class="recruit-info">
+                  <strong class="job-title">[[${item.title}]]
+                    <span th:if="${item.endDate.isBefore(T(java.time.LocalDate).now())}"  class="badge2">모집종료</span>
+                    <span th:unless="${item.endDate.isBefore(T(java.time.LocalDate).now())}"  class="badge">모집중</span>
+                  </strong>
+                  <div class="job-meta">
+                    [[${item.department}]]/ [[${item.career}]] / [[${item.employmentType}]]
+                  </div>
+                </div>
+                <div class="job-status">[[${item.startDate}]]~[[${item.endDate}]]</div>
+              </a>
+            </li>
+
+          </ul>
+          <div class="notice-footer">
+              <div class="pagination">
+                <th:block th:if="${pageResponseDTO.prev}">
+                  <a th:href="@{/company/recruit(pg=${pageResponseDTO.start-1})}" class="prev">이전</a>
+                </th:block>
+
+                <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                  <a th:href="@{/company/recruit(pg=${num})}" th:class="${num == pageResponseDTO.pg} ? 'current' : 'num'">[[${num}]]</a>
+                </th:block>
+
+                <th:block th:if="${pageResponseDTO.next}">
+                  <a th:href="@{/company/recruit(pg=${pageResponseDTO.end+1})}" class="next">다음</a>
+                </th:block>
+              </div>
+          </div>
+      </div>
+      </main>
+
+      <!-- 메인 끝 -->
+
+      <!-- 푸터 시작 -->
+      <th:block th:include="/common/footer.html"/>
+      <!-- 푸터 끝 -->
+    </div>
+    <script src="/js/company/index.js"></script>
+  </body>
+</html>

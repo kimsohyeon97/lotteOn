@@ -1,0 +1,16 @@
+<aside>
+    <div class="category">
+        <p>카테고리</p>
+        <div class="category-item" th:each="item: ${appInfo.Categories}">
+            <div class="parent">[[${item.mainCategoryName}]]</div>
+            <div class="children">
+
+                <a th:each="sub : ${item.subCategories}"
+                   th:href="@{/product/list(subCateNo=${sub.subCateNo})}">
+                    [[${sub.subCategoryName}]]</a>
+            </div>
+        </div>
+
+
+    </div>
+</aside>

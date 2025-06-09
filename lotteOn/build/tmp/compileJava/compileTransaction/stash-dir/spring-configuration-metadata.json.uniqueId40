@@ -1,0 +1,27 @@
+{
+  "groups": [
+    {
+      "name": "spring.security.oauth2.client.registration.google",
+      "type": "kr.co.lotteon.config.OAuth2Properties",
+      "sourceType": "kr.co.lotteon.config.OAuth2Properties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "spring.security.oauth2.client.registration.google.client-id",
+      "type": "java.lang.String",
+      "sourceType": "kr.co.lotteon.config.OAuth2Properties"
+    },
+    {
+      "name": "spring.security.oauth2.client.registration.google.client-secret",
+      "type": "java.lang.String",
+      "sourceType": "kr.co.lotteon.config.OAuth2Properties"
+    },
+    {
+      "name": "spring.security.oauth2.client.registration.google.redirect-uri",
+      "type": "java.lang.String",
+      "sourceType": "kr.co.lotteon.config.OAuth2Properties"
+    }
+  ],
+  "hints": []
+}

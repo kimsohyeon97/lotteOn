@@ -1,0 +1,62 @@
+
+<table class="product_info">
+    <tr>
+        <td>영수증 유형</td>
+        <td th:text="${productDTO.productDetail.receiptType}"></td>
+    </tr>
+    <tr>
+        <td>상품 상태</td>
+        <td th:text="${productDTO.productDetail.prodState}"></td>
+    </tr>
+    <tr>
+        <td>면세 여부</td>
+        <td th:text="${productDTO.productDetail.taxFree}"></td>
+    </tr>
+    <tr>
+        <td>사업자 유형</td>
+        <td th:text="${productDTO.productDetail.bizType}"></td>
+    </tr>
+    <tr>
+        <td>원산지</td>
+        <td th:text="${productDTO.productDetail.origin}"></td>
+    </tr>
+</table>
+<img src="/images/product/lotteimage.png">
+<p>MD 공지사항</p>
+<img th:src="${productDTO.productImage.sNameDetail}" alt="박스"
+     onerror="this.src='/images/productBox.jpg';">
+<!-- <img src="/images/product/beautyfesta.jpeg"> -->
+<p>상품필수정보</p>
+<table class="product_assential">
+    <tr><th>원산지</th>  <td th:text="${productDTO.productDetail.origin}"></td></tr>
+    <tr><th>모델명</th>  <td th:text="${productDTO.prodName}"></td></tr>
+    <tr><th>상품번호</th>  <td th:text="${productDTO.prodNo}"></td></tr>
+    <tr><th>상품상태</th><td>새상품</td></tr>
+    <tr><th>브랜드</th>  <td th:text="${productDTO.prodBrand}"></td></tr>
+    <tr><th>내용물의 용량 또는 중량</th><td>75ml</td></tr>
+    <tr><th>제품 주요 사양</th><td>모든 피부 타입</td></tr>
+    <tr><th>사용기한 또는 개봉 후 사용기간</th>
+        <td>개봉 후 36개월 / 제조년월일부터 10개월 이내 상품을 발송합니다. (제품별로 상이하므로 고객센터 문의: 02-772-3225)</td>
+    </tr>
+    <tr><th>사용방법</th><td>맥박이 뛰는 부위, 옷깃이 스치는 곳에 분사하여 사용합니다.</td></tr>
+    <tr><th>화장품제조업자 및 화장품책임판매업자</th>
+        <td>제조자: 씨씨아이알엔디 / 제조판매업자: 씨씨인터내셔널</td>
+    </tr>
+    <tr><th>제조국</th><td>프랑스</td></tr>
+    <tr><th>전성분</th>
+        <td>
+            변성알코올, 향료, 정제수, 에칠헥실메톡시신나메이트, 에칠헥실살리실레이트, 부틸메톡시디벤조일메탄,<br>
+            비에이치티, 리모넨, 리날룰, 알파-아이소메틸아이오논, 파네솔, 제라니올, 시트랄, 시트로넬롤
+        </td>
+    </tr>
+    <tr><th>기능성 여부</th><td>해당없음</td></tr>
+    <tr><th>사용할 때 주의사항</th>
+        <td>
+            1. 화장품 사용 중 붉은 반점, 부어오름, 가려움증 등의 이상이 있을 경우 사용 중지<br>
+            2. 상처가 있는 부위에는 사용을 자제할 것<br>
+            3. 보관 및 취급 시의 주의사항: 어린이 손에 닿지 않는 곳에 보관할 것, 고온 또는 저온의 장소 및 직사광선을 피해 보관할 것
+        </td>
+    </tr>
+    <tr><th>품질보증기준</th><td>관련법 및 소비자분쟁해결기준에 따름</td></tr>
+    <tr><th>소비자상담 관련 전화번호</th><td>딥티크 담당자 / 1644-4490</td></tr>
+</table>

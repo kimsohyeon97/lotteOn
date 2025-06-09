@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/myPage/layout.css">
+    <link rel="stylesheet" href="/css/myPage/myPageMain.css">
+    <link rel="stylesheet" href="/css/common/table-main.css">
+    <link rel="stylesheet" href="/css/myPage/pagination.css">
+    <link rel="stylesheet" href="/css/index_layout.css">
+    <link rel="stylesheet" href="/css/common/header.css">
+    <script src="/js/common/state.js"></script>
+    <script src="/js/headerMenu.js"></script>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 헤더 시작 -->
+        <th:block th:include="/common/header.html"/>
+        <!-- 헤더 끝 -->
+        <!-- 메인 시작 -->
+        <main>
+            <th:block th:insert="/myPage/inc/myShoppingInfo.html"></th:block>
+            <section class="content">
+                <!-- 왼쪽 사이드바 -->
+                <th:block th:include="/myPage/inc/sidebar.html"/>
+                <!-- 사이드바 끝-->
+                <!-- 오른쪽 글 -->
+                <article class="main_content_side">
+                    <div class="ad" th:if="${banner != null}">
+                        <img th:src="@{/upload/{image}(image=${banner.sName})}"
+                             th:style="'width:' + ${banner.width} + 'px;'
+                                            +'height:' + ${banner.height} + 'px;'"
+                             onerror="this.src='/images/가정의달.PNG';"
+                             th:attr="onclick=|location.href='${banner.link}'|"
+                             alt="lotteOn">
+                    </div>
+                    <div class="inquiry-details">
+                        <div class="title-area">
+                            <h1>문의내역</h1>
+                        </div>
+                        <div class="inquiry-details-table">
+                            <table class="table-main">
+                                <tbody>
+                                    <tr>
+                                        <th>번호</th>
+                                        <th>문의채널</th>
+                                        <th>문의유형</th>
+                                        <th>제목</th>
+                                        <th>작성일</th>
+                                        <th>상태</th>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr th:each="inquiry, i : ${inquiryDTO.dtoList}">
+                                        <td th:text="${inquiryDTO.startNo - i.index}"></td>
+                                        <td th:text="${inquiry.channel}"></td>
+                                        <td th:text="${inquiry.cateV1}"></td>
+                                        <td><a th:href="@{/cs/qna/view(no=${inquiry.no})}">[[${inquiry.title}]]</a></td>
+                                        <td th:text="${#temporals.format(inquiry.wdate, 'yyyy-MM-dd')}"></td>
+                                        <td class="state" th:text="${inquiry.state}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="notice-footer">
+                        <div class="pagination">
+                            <a class="prev" th:if="${inquiryDTO.prev}" th:href="@{/my/qna(pg=${inquiryDTO.start - 1}, size=${inquiryDTO.size})}">이전</a>
+                            <th:block th:each="i: ${#numbers.sequence(inquiryDTO.start, inquiryDTO.end)}">
+                                <a th:href="@{/my/qna(pg=${i}, size=${inquiryDTO.size})}" th:text="${i}" th:class="${i == inquiryDTO.pg ? 'active' : ''}"></a>
+                            </th:block>
+                            <a class="next" th:if="${inquiryDTO.next}" th:href="@{/my/qna(pg=${inquiryDTO.end + 1}, size=${inquiryDTO.size})}">다음</a>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </main>
+        <!-- 메인 끝 -->
+        <!-- 푸터 시작 -->
+        <th:block th:include="/common/footer.html"/>
+        <!-- 푸터 끝 -->
+    </div>
+</body>
+</html>

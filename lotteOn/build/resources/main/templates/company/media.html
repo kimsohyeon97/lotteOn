@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>미디어</title>
+    <link rel="stylesheet" href="/css/company/media.css" />
+  </head>
+  <body>
+    <div id="wrapper">
+      <!-- 헤더 시작 -->
+      <header>
+        <div class="header_main">
+          <div class="logo">
+            <a th:href="@{/}"><img src="/images/logo.png" alt="lotteOn" /></a>
+          </div>
+          <div class="user_menu">
+            <a th:href="@{/company/index}">HOME</a>
+            <a th:href="@{/company/culture}">기업문화</a>
+            <a th:href="@{/company/story}">소식과 이야기</a>
+            <a th:href="@{/company/recruit}">채용</a>
+            <a th:href="@{/company/media}" class="active">미디어</a>
+          </div>
+        </div>
+      </header>
+
+      <!-- 메인 시작 -->
+      <main class="content">
+        <h1>미디어 세상 속 롯데 ON을 소개합니다!</h1>
+        <p class="subtitle">더 다양한 LOTTE ON의 이야기를 소개합니다</p>
+    
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-img">
+              <iframe width="100%" height="180"
+                src="https://www.youtube.com/embed/sQ88s9UY1eo"
+                title="YouTube video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+              <span class="badge">광고</span>
+            </div>
+            <div class="card-body">
+              <h3>‘롯데의 Transform’ 편(30s)</h3>
+              <p>[롯데그룹 광고] 롯데의 변화엔 한계가 없다</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-img">
+              <iframe width="100%" height="180"
+                src="https://www.youtube.com/embed/1QfNlY8h97o?si"
+                title="YouTube video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+              <span class="badge">인터뷰</span>
+            </div>
+            <div class="card-body">
+              <h3>롯데홈쇼핑 채용 토크</h3>
+              <p>롯데홈쇼핑 채용/직무 담당자가 직접 알려주는 2020 상반기 채용 및 직무 꿀팁 안내</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-img">
+              <iframe width="100%" height="180"
+                src="https://www.youtube.com/embed/E1sgECaHnsI?si"
+                title="YouTube video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+              <span class="badge">광고</span>
+            </div>
+            <div class="card-body">
+              <h3>롯데홈쇼핑 광고</h3>
+              <p>3월 위대한 선택 - (Lotte Home Shopping Spot)</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-img">
+              <iframe width="100%" height="180"
+                src="https://www.youtube.com/embed/_3aEs1rJo58?si"
+                title="YouTube video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+              <span class="badge">정보</span>
+            </div>
+            <div class="card-body">
+              <h3>롯데홈쇼핑페스타 롯쇼페</h3>
+              <p>04.01-04.27 롯데홈쇼핑페스타 롯쇼페!</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-img">
+              <iframe width="100%" height="180"
+                      src="https://www.youtube.com/embed/AEHoUyrL6bI"
+                title="YouTube video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+              <span class="badge">정보</span>
+            </div>
+            <div class="card-body">
+              <h3>롯데레드페스티벌 개막</h3>
+              <p>2024 쇼핑 버라이어티, 역대 최대 혜택을 담은
+                롯데레드페스티벌이 개막</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-img">
+              <iframe width="100%" height="180"
+                src="https://www.youtube.com/embed/PEUvPBB2v6U"
+                title="YouTube video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+              <span class="badge">정보</span>
+            </div>
+            <div class="card-body">
+              <h3>올 하반기 역대급 브랜드 쇼핑 축제, 온세상 쇼핑 페스타</h3>
+              <p>🌟10월 14일 부터 23일 까지🌟 단, 10일간 진행되는 역대급 브랜드 쇼핑 축제!</p>
+            </div>
+          </div>
+
+        </div>
+      </main>
+
+      <!-- 메인 끝 -->
+
+      <!-- 푸터 시작 -->
+      <th:block th:include="/common/footer.html"/>
+      <!-- 푸터 끝 -->
+    </div>
+    <script src="/js/company/index.js"></script>
+  </body>
+</html>

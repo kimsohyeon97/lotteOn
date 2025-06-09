@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 회원목록 : 롯데On</title>
+    <link rel="stylesheet" href="/css/admin/member.css">
+    <link rel="stylesheet" href="/css/layout/layout.css">
+    <link rel="stylesheet" href="/css/admin/admin.css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:src="@{/js/admin/postcode.js}"></script>
+    
+    <!-- 사이드바-->
+    <!-- 사이드바-->
+    <script src="/js/admin/sidebar.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function (){
+
+
+            // 전체 체크박스
+            const deleteAllCheckbox = document.getElementById('deleteAll');
+
+            // 개별 체크박스
+            const deleteCheckboxes = document.querySelectorAll('input[name="no"]');
+
+            deleteAllCheckbox.addEventListener('change', function () {
+                const isChecked = this.checked;
+                deleteCheckboxes.forEach(cb => cb.checked = isChecked);
+            });
+
+            document.querySelectorAll('.rank-select').forEach(function(select) {
+                select.addEventListener('change', function(e) {
+                    const selectedRank = e.target.value;
+                    const uid = e.target.dataset.uid;
+
+                    const data = select.closest('tr');
+                    const checkbox = data.querySelector('input[name="no"]');
+                    checkbox.checked = true;
+
+                });
+            });
+
+            document.querySelector('.member_list_form').addEventListener('submit', function(e) {
+                const checkedBoxes = document.querySelectorAll('input[name="no"]:checked');
+
+                if (checkedBoxes.length === 0) {
+                    e.preventDefault();
+                    alert('수정할 항목을 선택해주세요.');
+                    return;
+                }
+
+                const confirmUpdate = confirm('선택한 항목을 정말 수정하시겠습니까?');
+                if (!confirmUpdate) {
+                    e.preventDefault();
+                    return;
+                }
+
+                // 기존에 생성된 hidden input이 있다면 제거
+                document.querySelectorAll('.dynamic-hidden').forEach(el => el.remove());
+
+                // 체크된 회원들에 대해 rank 값도 같이 전송
+                checkedBoxes.forEach(cb => {
+                    const uid = cb.value;
+                    const row = cb.closest('tr');
+                    const rankSelect = row.querySelector('select[name="rank"]');
+                    const selectedRank = rankSelect.value;
+
+                    // no
+                    const inputUid = document.createElement('input');
+                    inputUid.type = 'hidden';
+                    inputUid.name = 'uids';
+                    inputUid.value = uid;
+                    inputUid.classList.add('dynamic-hidden');
+
+                    // rank
+                    const inputRank = document.createElement('input');
+                    inputRank.type = 'hidden';
+                    inputRank.name = 'ranks';
+                    inputRank.value = selectedRank;
+                    inputRank.classList.add('dynamic-hidden');
+
+                    this.appendChild(inputUid);
+                    this.appendChild(inputRank);
+                });
+            });
+
+        });
+
+    </script>
+
+    
+    
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 헤더 시작 -->
+        <th:block th:include="/admin/inc/header.html"/>
+        <!-- 헤더 끝 -->
+        <main>
+            <section class="content">
+                <!-- 왼쪽 사이드바 -->
+                <th:block th:include="/admin/inc/sidebar.html"/>
+                <!-- 사이드바 끝-->
+                <!-- 오른쪽 글 -->
+                <article class="main_content_side">
+                    <!-- 여기부터 글 작성 -->
+                    <div class="main_head">
+                        <p class="main_head_title">회원목록</p>
+                        <div style="float: right;">
+                            <p style="font-size: 16px;">Home > 회원관리 ><span> 회원목록</span></p>
+                        </div>
+                    </div>
+
+                    <div class="select_div">
+                        <div class="select_box">
+                            <form th:action="@{/admin/member/search}">
+                                <select name="searchType" th:field="*{pageResponseDTO.searchType}">
+                                    <option value="아이디">아이디</option>
+                                    <option value="이름">이름</option>
+                                    <option value="이메일">이메일</option>
+                                    <option value="휴대폰">휴대폰</option>
+                                </select>
+                                <input type="text" name="keyword" class="search_text" placeholder="검색어 입력">
+                                <input type="submit" class="search_btn" value="검색">
+                            </form>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/admin/member/rank/modify}" class="member_list_form" method="post">
+                        <table>
+                            <thead>
+                                <th><input type="checkbox" id="deleteAll"></th>
+                                <th>번호</th>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>성별</th>
+                                <th>등급</th>
+                                <th>포인트</th>
+                                <th>이메일</th>
+                                <th>휴대폰</th>
+                                <th>가입일</th>
+                                <th>상태</th>
+                                <th style="width: 50px;">관리</th>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item, i : ${pageResponseDTO.dtoList}">
+                                    <td>
+                                        <input type="checkbox" name="no" th:value="${item.uid}">
+                                    </td>
+                                    <td>[[${pageResponseDTO.startNo - i.index}]]</td>
+                                    <td>[[${item.uid}]]</td>
+                                    <td>[[${item.name}]]</td>
+                                    <td>[[${item.userDetails.gender}]]</td>
+                                    <td>
+                                        <select name="rank" class="rank-select" th:data-uid="${item.uid}">
+                                            <option value="FAMILY" th:selected="${item.userDetails.rank == 'FAMILY'}">FAMILY</option>
+                                            <option value="SILVER" th:selected="${item.userDetails.rank == 'SILVER'}">SILVER</option>
+                                            <option value="GOLD" th:selected="${item.userDetails.rank == 'GOLD'}">GOLD</option>
+                                            <option value="VIP" th:selected="${item.userDetails.rank == 'VIP'}">VIP</option>
+                                            <option value="VVIP" th:selected="${item.userDetails.rank == 'VVIP'}">VVIP</option>
+                                        </select>
+                                    </td>
+                                    <td>[[${item.userDetails.userPoint}]]</td>
+                                    <td>[[${item.email}]]</td>
+                                    <td>[[${item.hp}]]</td>
+                                    <td th:text="${#temporals.format(item.regDate, 'yyyy.MM.dd HH:mm:ss')}"></td>
+                                    <td th:class="${item.state == '정상' ? 'operation' :  'stop' }">[[${item.state}]]</td>
+                                    <td style="width: 60px;">
+                                        <a href="#" id="modal_modify" class="detail">[ &nbsp; 수정 &nbsp; ]</a><br>
+                                        <a th:href="@{/admin/member/state(uid=${item.uid} , state='중지')}">[ &nbsp; 중지 &nbsp; ]</a>
+                                        <a th:href="@{/admin/member/state(uid=${item.uid} , state='재개')}">[ &nbsp; 재개 &nbsp; ]</a>
+                                        <a th:href="@{/admin/member/state(uid=${item.uid} , state='비활성')}">[ 비활성 ]</a>
+                                    </td>
+                                    <input type="hidden" id="addr1V1" th:value="${item.addr1}">
+                                    <input type="hidden" id="addr2V1" th:value="${item.addr2}">
+                                    <input type="hidden" id="contentV1" th:value="${item.userDetails.content}">
+                                    <input type="hidden" id="lastLoginAtV1" th:value="${#temporals.format(item.lastLoginAt, 'yyyy.MM.dd HH:mm:ss')}">
+                                    <input type="hidden" id="zipV1" th:value="${item.zip}">
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+
+                        <div style="margin-top: 20px;">
+                            <button type="submit" class="modify_btn">선택수정</button>
+                        </div>
+                    </form>
+                    <!-- 페이징 -->
+                    <div class="page">
+                        <th:block th:if="${pageResponseDTO.prev}">
+                            <a th:href="@{/admin/member/search(pg=${pageResponseDTO.start-1}, searchType=${pageResponseDTO.searchType} , keyword=${pageResponseDTO.keyword})}" class="prev">이전</a>
+                        </th:block>
+
+                        <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                            <a th:href="@{/admin/member/search(pg=${num} , searchType=${pageResponseDTO.searchType} , keyword=${pageResponseDTO.keyword})}" th:class="${num == pageResponseDTO.pg} ? 'current' : 'num'">[[${num}]]</a>
+                        </th:block>
+
+                        <th:block th:if="${pageResponseDTO.next}">
+                            <a th:href="@{/admin/member/search(pg=${pageResponseDTO.end+1} , searchType=${pageResponseDTO.searchType} , keyword=${pageResponseDTO.keyword} )}" class="next">다음</a>
+                        </th:block>
+                    </div>
+                    
+                </article>
+            </section>
+        </main>
+
+        <!-- 푸터 시작 -->
+        <th:block th:include="/admin/inc/footer.html"/>
+        <!-- 푸터 끝 -->
+    </div>
+
+
+
+    <!-- 모달 -->
+    <!-- 맴버 수정 모달 -->
+    <th:block th:include="/admin/inc/modal/memberModal.html"/>
+
+
+
+
+</body>
+</html>

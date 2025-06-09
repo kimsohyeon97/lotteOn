@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/layout/layout.css">
+    <link rel="stylesheet" href="/css/product/product_header.css">
+    <link rel="stylesheet" href="/css/product/cart.css">
+    <script src="/js/headerMenu.js"></script>
+    <title>장바구니 : 롯데 On</title>
+</head>
+<body>
+<script src="/js/product/cart.js"></script>
+    <div id="wrapper">
+        <th:block th:include="/common/header.html"/>
+        <main>
+            <section class="content">
+                <th:block th:include="/product/side.html"/>
+                <div class="cart">
+                    <h1>장바구니</h1>
+                    <form id="order-form" action="/product/order">
+                        <div>
+                            <div class="cart_header">
+                                <input type="checkbox" id="check-all">
+                                <label for="check-all">전체선택(0)</label>
+                                <button type="button">선택삭제</button>
+                            </div>
+
+                            <div th:each="cart : ${cartDTOList}" class="cart_content" th:attr="data-prod-no=${cart.product.prodNo}" data-point="1">
+                                <div>
+                                    <label>
+                                        <input type="checkbox" name="cartNo" th:value="${cart.cartNo}"/>
+                                        [[${cart.product.seller.company}]]
+                                    </label>
+                                </div>
+                                <div>
+                                    <div class="cart_product">
+                                        <div>
+                                            <img th:src="${cart.product.productImage.sNameList}" alt="상품 이미지">
+                                        </div>
+                                        <div>
+                                            <p class="vendor-name">[[${cart.product.seller.company}]]</p>
+                                            <p>
+                                                <span>[[${cart.product.prodBrand}]] </span><br>
+                                                [[${cart.product.prodName}]]
+                                            </p>
+                                            <p class="price_delivery" th:attr="data-delivery-fee=${cart.product.prodDeliveryFee}">
+                                                <span th:if="${cart.product.prodDeliveryFee == 0}">무료배송</span>
+                                                <span th:if="${cart.product.prodDeliveryFee != 0}">
+                                                    배송비: [[${#numbers.formatInteger(cart.product.prodDeliveryFee, 3, 'COMMA')}]]원
+                                                </span>
+                                            </p>
+                                            <span class="arrival-date">도착예정</span>
+                                        </div>
+                                    </div>
+                                    <div class="options-container">
+                                        <div th:if="${not #strings.isEmpty(cart.opt1Cont)}">
+                                            <p th:text="${cart.opt1 + ': ' + cart.opt1Cont}"></p>
+                                        </div>
+                                        <div th:if="${not #strings.isEmpty(cart.opt2Cont)}">
+                                            <p th:text="${cart.opt2 + ': ' + cart.opt2Cont}"></p>
+                                        </div>
+                                        <div th:if="${not #strings.isEmpty(cart.opt3Cont)}">
+                                            <p th:text="${cart.opt3 + ': ' + cart.opt3Cont}"></p>
+                                        </div>
+                                        <div th:if="${not #strings.isEmpty(cart.opt4Cont)}">
+                                            <p th:text="${cart.opt4 + ': ' + cart.opt4Cont}"></p>
+                                        </div>
+                                        <div th:if="${not #strings.isEmpty(cart.opt5Cont)}">
+                                            <p th:text="${cart.opt5 + ': ' + cart.opt5Cont}"></p>
+                                        </div>
+                                        <div th:if="${not #strings.isEmpty(cart.opt6Cont)}">
+                                            <p th:text="${cart.opt6 + ': ' + cart.opt6Cont}"></p>
+                                        </div>
+                                    </div>
+                                    <div class="quantity-box">
+                                        <button class="btn-minus" type="button">-</button>
+                                        <span class="quantity">[[${cart.cartProdCount}]]</span>
+                                        <button class="btn-plus" type="button">+</button>
+                                    </div>
+                                    <div class="cart_price">
+                                        <p class="price_original"
+                                           th:attr="data-unit=${cart.product.prodPrice}">
+                                            [[${#numbers.formatInteger(cart.product.prodPrice * cart.cartProdCount, 3, 'COMMA')}]]원
+                                        </p>
+                                        <p class="price_total"
+                                           th:attr="data-unit=${(cart.product.prodPrice * (100 - cart.product.prodDiscount) / 100)}">
+                                            [[${#numbers.formatInteger((cart.product.prodPrice * (100 - cart.product.prodDiscount) / 100) * cart.cartProdCount, 3, 'COMMA')}]]원
+                                        </p>
+                                        <p>혜택변경</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cart_summary">
+                            <p>결제예정금액</p>
+                            <form>
+                                <table>
+                                    <tr><th>상품수</th><td id="summary-count">0</td></tr>
+                                    <tr><th>상품금액</th><td id="summary-amount">0</td></tr>
+                                    <tr><th>할인금액</th><td id="summary-discount">0</td></tr>
+                                    <tr><th>배송비</th><td id="summary-shipping">0</td></tr>
+                                    <tr class="total"><th>총</th><td id="summary-total">0</td></tr>
+                                    <tr><td colspan="2"><button type="submit" id="order-button">주문하기</button></td></tr>
+                                </table>
+                            </form>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+        <th:block th:include="/common/footer.html"/>
+    </div>
+</body>
+</html>

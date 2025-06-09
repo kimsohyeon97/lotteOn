@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>휴대폰 인증</title>
+  <link rel="stylesheet" th:href="@{/css/member/phoneAuth.css}" />
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAuHVRYWq72wUqxdYRsft6kvxXhg03V2jM",
+      authDomain: "lotteon-bd31e.firebaseapp.com",
+      projectId: "lotteon-bd31e",
+      storageBucket: "lotteon-bd31e.firebasestorage.app",
+      messagingSenderId: "121588575858",
+      appId: "1:121588575858:web:d870507a370ea07e3d5ceb",
+      measurementId: "G-VQN8SQWW41"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <script th:src="@{/js/member/phoneAuth.js}"></script>
+</head>
+<body>
+<div class="container">
+  <header>
+    <img th:src="@{/images/logo.png}" alt="LotteOn 로고" />
+  </header>
+
+  <section>
+    <form th:action="@{/user/member/findIdResult/phone}" method="post" id="phoneForm" onsubmit="return validateAuth()">
+      <h2><strong>정보</strong>를 <br />입력해주세요</h2>
+
+      <!-- 이름 -->
+      <input type="text" id="name" name="name" placeholder="이름" required />
+
+      <!-- 전화번호 -->
+      <input type="text" id="phone" name="hp" placeholder="+821012345678 형식" required />
+
+      <!-- 인증번호 받기 버튼 (초기 숨김) -->
+      <button type="button" id="btnSendCode" style="display: none;">인증번호 받기</button>
+
+      <!-- 인증번호 입력칸 (초기 숨김) -->
+      <div id="codeBox" style="display: none; margin-top: 20px;">
+        <input type="text" id="code" name="authCode" placeholder="인증번호 입력" required />
+        <button type="button" id="btnVerifyCode" style="display: none;">인증 확인</button>
+
+        <!-- ⏱️ 타이머 영역 추가 -->
+        <div id="timerBox" style="margin-top: 10px; color: red; font-weight: bold;"></div>
+      </div>
+
+
+
+      <!-- 다음 버튼 (초기 비활성화) -->
+      <button type="submit" id="nextBtn" disabled>다음</button>
+
+      <!-- reCAPTCHA -->
+      <div id="recaptcha-container"></div>
+    </form>
+  </section>
+</div>
+
+
+</body>
+</html>

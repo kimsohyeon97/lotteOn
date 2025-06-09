@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 매출현황 : 롯데On</title>
+    <link rel="stylesheet" href="/css/admin/shop.css">
+    <link rel="stylesheet" href="/css/layout/layout.css">
+    <link rel="stylesheet" href="/css/admin/admin.css">
+
+    <!-- 사이드바-->
+    <script src="/js/admin/sidebar.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('#select').addEventListener('change',function(e){
+                this.form.submit();
+            })
+        });
+
+    </script>
+
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 헤더 시작 -->
+        <th:block th:include="/admin/inc/header.html"/>
+        <!-- 헤더 끝 -->
+        <main>
+            <section class="content">
+                <!-- 왼쪽 사이드바 -->
+                <th:block th:include="/admin/inc/sidebar.html"/>
+
+                <!-- 사이드바 끝-->
+                <!-- 오른쪽 글 -->
+                <article class="main_content_side">
+                    <!-- 여기부터 글 작성 -->
+                    <div class="main_head">
+                        <p class="main_head_title">매출현황</p>
+                        <div style="float: right;">
+                            <p style="font-size: 16px;">Home > 상점관리 ><span> 매출현황</span></p>
+                        </div>
+                    </div>
+
+                    <div class="select_div">
+                        <div class="select_box">
+                            <form th:action="@{/admin/shop/sales/search}" id="search_form">
+                                <select name="searchType" id="select" style="width: 100px;" th:field="*{pageResponseDTO.searchType}">
+                                    <option value="일별">일별</option>
+                                    <option value="주간">주간</option>
+                                    <option value="한달">한달</option>
+                                </select>
+                            </form>
+                        </div>
+                        
+                    </div>
+
+                    <table class="sales_table">
+                        <thead>
+                            <th>번호</th>
+                            <th>상호명</th>
+                            <th>사업자등록번호</th>
+                            <th>주문건수</th>
+                            <th>결제완료</th>
+                            <th>배송중</th>
+                            <th>배송완료</th>
+                            <th>구매확정</th>
+                            <th>주문합계</th>
+                            <th>매출합계</th>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item, i : ${pageResponseDTO.dtoList}">
+                                <td>[[${pageResponseDTO.startNo - i.index}]]</td>
+                                <td>[[${item.company}]]</td>
+                                <td>[[${item.bizRegNo}]]</td>
+                                <td>[[${item.orderCount}]]</td>
+                                <td>[[${item.creditCount}]]</td>
+                                <td>[[${item.shippingCount}]]</td>
+                                <td>[[${item.deliveryCount}]]</td>
+                                <td>[[${item.confirmCount}]]</td>
+                                <td>[[${item.orderTotal}]]</td>
+                                <td>[[${item.total}]]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- 페이징 -->
+                    <!-- 페이징 -->
+                    <div class="page">
+                        <th:block th:if="${pageResponseDTO.prev}">
+                            <a th:href="@{/admin/shop/sales(pg=${pageResponseDTO.start - 1})}" class="prev">이전</a>
+                        </th:block>
+                        <th:block th:each="i: ${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                            <a th:href="@{/admin/shop/sales( pg=${i}, size=${pageResponseDTO.size})}" th:text="${i}" th:class="${i == pageResponseDTO.pg ? 'current' : ''}"></a>
+                        </th:block>
+
+                        <th:block th:if="${pageResponseDTO.next}">
+                            <a th:href="@{/admin/shop/sales(pg=${pageResponseDTO.end + 1}, size=${pageResponseDTO.size})}" class="next">다음</a>
+                        </th:block>
+                    </div>
+                    
+                </article>
+            </section>
+        </main>
+
+        <!-- 푸터 시작 -->
+        <th:block th:include="/admin/inc/footer.html"/>
+        <!-- 푸터 끝 -->
+    </div>
+
+
+
+
+</body>
+</html>

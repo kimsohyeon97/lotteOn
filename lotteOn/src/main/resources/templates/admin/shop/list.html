@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 상점목록 : 롯데On</title>
+    <link rel="stylesheet" href="/css/admin/shop.css">
+    <link rel="stylesheet" href="/css/layout/layout.css">
+    <link rel="stylesheet" href="/css/admin/admin.css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:src="@{/js/admin/postcode.js}"></script>
+
+    <!-- 사이드바-->
+    <script src="/js/admin/sidebar.js"></script>
+
+    <style>
+        .operation{
+            color: #36B04B;
+        }
+
+        .stop{
+            color: #F40000;
+        }
+
+        .ready{
+            color: #2771C3;
+        }
+    </style>
+
+    
+    
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 헤더 시작 -->
+        <th:block th:include="/admin/inc/header.html"/>
+        <!-- 헤더 끝 -->
+        <main>
+            <section class="content">
+                <!-- 왼쪽 사이드바 -->
+                <th:block th:include="/admin/inc/sidebar.html"/>
+
+                <!-- 사이드바 끝-->
+                <!-- 오른쪽 글 -->
+                <article class="main_content_side">
+                    <!-- 여기부터 글 작성 -->
+                    <div class="main_head">
+                        <p class="main_head_title">상점목록</p>
+                        <div style="float: right;">
+                            <p style="font-size: 16px;">Home > 상점관리 ><span> 상점목록</span></p>
+                        </div>
+                    </div>
+
+                    <div class="select_div">
+                        <div class="select_box">
+                            <form th:action="@{/admin/shop/search}">
+                                <select name="searchType" style="width: 120px;">
+                                    <option value="상호명">상호명</option>
+                                    <option value="대표자">대표자</option>
+                                    <option value="사업자등록번호">사업자등록번호</option>
+                                    <option value="연락처">연락처</option>
+                                </select>
+                                <input type="text" name="keyword" class="search_text" placeholder="검색어 입력">
+                                <input type="submit" class="search_btn" value="검색">
+                            </form>
+                        </div>
+                        <div class="select_info">
+                                <span style="color: #36B04B;">●운영중</span>
+                                <span style="color: #F40000;">●운영중지</span> 
+                                <span style="color: #2771C3;">●운영준비</span>   
+                        </div>
+                    </div>
+
+                    <form th:action="@{/admin/shop/delete}" class="shop_list_form">
+                        <table>
+                            <thead>
+                                <th><input type="checkbox"></th>
+                                <th>번호</th>
+                                <th>상호명</th>
+                                <th>대표</th>
+                                <th>사업자등록번호</th>
+                                <th>통신판매업번호</th>
+                                <th>연락처</th>
+                                <th>운영</th>
+                                <th>관리</th>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item : ${pageResponseDTO.dtoList}">
+                                    <td>
+                                        <input type="checkbox" name="deleteNo" th:value="${item.sno}" />
+                                    </td>
+                                    <td>[[${item.sno}]]</td>
+                                    <td>[[${item.company}]]</td>
+                                    <td>[[${item.ceo}]]</td>
+                                    <td>[[${item.bizRegNo}]]</td>
+                                    <td>[[${item.commerceNo}]]</td>
+                                    <td>[[${item.user.hp}]]</td>
+                                    <td th:class="${item.user.state == '중단'} ? 'stop' : (${item.user.state == '재개'} ? 'ready' : 'operation')">●</td>
+                                    <td>
+                                        <a th:href="@{/admin/shop/modify(uid=${item.user.uid}, state=${item.user.state})}">[[${item.user.manage}]]</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="margin-top: 20px;">
+                            <button type="submit" class="delete_btn">선택삭제</button>
+                            <button type="button" id="modal_register" class="register_btn">상점등록</button>
+                        </div>
+                    </form>
+                    <!-- 페이징 -->
+                    <div class="page">
+                        <th:block th:if="${pageResponseDTO.prev}">
+                            <a th:href="@{/admin/shop/list(pg=${pageResponseDTO.start - 1})}" class="prev">이전</a>
+                        </th:block>
+                        <th:block th:each="i: ${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                            <a th:href="@{/admin/shop/list( pg=${i}, size=${pageResponseDTO.size})}" th:text="${i}" th:class="${i == pageResponseDTO.pg ? 'current' : ''}"></a>
+                        </th:block>
+
+                        <th:block th:if="${pageResponseDTO.next}">
+                            <a th:href="@{/admin/shop/list(pg=${pageResponseDTO.end + 1}, size=${pageResponseDTO.size})}" class="next">다음</a>
+                        </th:block>
+                    </div>
+                    
+                </article>
+            </section>
+        </main>
+
+        <!-- 푸터 시작 -->
+        <th:block th:include="/admin/inc/footer.html"/>
+        <!-- 푸터 끝 -->
+    </div>
+
+
+
+    <!-- 모달 -->
+    <!-- 판매자 등록 모달 -->
+    <th:block th:include="/admin/inc/modal/shopRegister.html"/>
+
+    <script>
+        const modal = document.querySelector('.modal');
+        const modalOpen = document.querySelector('#modal_register');
+        const modalClose = document.querySelector('.close_btn');
+
+        //열기 버튼을 눌렀을 때 모달팝업이 열림
+        modalOpen.addEventListener('click',function(){
+            //'on' class 추가
+            modal.classList.add('on');
+        });
+        //닫기 버튼을 눌렀을 때 모달팝업이 닫힘
+        modalClose.addEventListener('click',function(){
+            //'on' class 제거
+            modal.classList.remove('on');
+        });
+    </script>
+
+
+
+
+</body>
+</html>

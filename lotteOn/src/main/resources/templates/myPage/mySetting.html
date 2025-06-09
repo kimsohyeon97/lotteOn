@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/myPage/layout.css">
+    <link rel="stylesheet" href="/css/myPage/myPageMain.css">
+    <link rel="stylesheet" href="/css/myPage/table-mySetting.css">
+    <link rel="stylesheet" href="/css/index_layout.css">
+    <link rel="stylesheet" href="/css/common/header.css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="/js/myPage/postcode.js"></script>
+    <script src="/js/myPage/mySetting.js"></script>
+    <script src="/js/headerMenu.js"></script>
+
+    <style>
+        .readonly-style {
+            background-color: #f5f5f5;
+            border: none;
+            color: gray;
+        }
+
+        .editing {
+            background-color: white;
+            border: 1px solid #ccc;
+            color: black;
+        }
+
+
+    </style>
+
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 헤더 시작 -->
+        <th:block th:include="/common/header.html"/>
+        <!-- 헤더 끝 -->
+        <!-- 메인 시작 -->
+        <main>
+            <th:block th:insert="/myPage/inc/myShoppingInfo.html"></th:block>
+            <section class="content">
+                <!-- 왼쪽 사이드바 -->
+                <th:block th:include="/myPage/inc/sidebar.html"/>
+                <!-- 사이드바 끝-->
+                <!-- 오른쪽 글 -->
+                <article class="main_content_side">
+                    <div class="ad" th:if="${banner != null}">
+                        <img th:src="@{/upload/{image}(image=${banner.sName})}"
+                             th:style="'width:' + ${banner.width} + 'px;'
+                                            +'height:' + ${banner.height} + 'px;'"
+                             onerror="this.src='/images/가정의달.PNG';"
+                             th:attr="onclick=|location.href='${banner.link}'|"
+                             alt="lotteOn">
+                    </div>
+                    <div class="title-area">
+                        <h1>나의설정</h1>
+                    </div>
+                    <form class="seller-info table-mySetting" th:action="@{/my/info}" method="post">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>사용자 ID</td>
+                                    <td th:if="${#strings.isEmpty(userDTO.provider)}" th:text="${userDTO.uid}"></td>
+                                    <td th:if="${not #strings.isEmpty(userDTO.provider)}" th:text="${userDTO.provider} + ' 로그인'"></td>
+                                </tr>
+                                <tr>
+                                    <td>비밀번호</td>
+                                    <td>
+                                        <button type="button" id="checkPasswordBtn">수정</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>이름</td>
+                                    <td>
+                                        <input type="text" name="name" class="name-input readonly-style" th:value="${userDTO.name}" readonly>
+                                        <button class="editBtn" type="button">수정</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>생년월일</td>
+                                    <td>[[${#strings.substring(userDTO.ssn, 0, 4)}]]년
+                                        [[${#strings.substring(userDTO.ssn, 4, 6)}]]월
+                                        [[${#strings.substring(userDTO.ssn, 6, 8)}]]일</td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>
+                                        <input th:value="${#strings.substring(userDTO.email, 0, userDTO.email.indexOf('@'))}"
+                                               name="email1"
+                                               type="text"
+                                               class="email-input readonly-style"
+                                               readonly>
+                                        @
+                                        <input th:value="${#strings.substring(userDTO.email, userDTO.email.indexOf('@') + 1)}"
+                                               name="email2"
+                                               type="text"
+                                               class="email-input readonly-style"
+                                               id="email-2nd"
+                                               readonly>
+                                        <select name="" id="email-select">
+                                            <option value="custom">직접입력</option>
+                                            <option value="naver.com">naver.com</option>
+                                            <option value="daum.net">daum.net</option>
+                                            <option value="google.com">google.com</option>
+                                        </select>
+                                        <button class="editBtn" type="button">수정</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>휴대폰</td>
+                                    <td>
+                                        <input type="text"
+                                               class="phone-input readonly-style"
+                                               th:value="${userDTO.phonePart1}"
+                                               name="phonePart1"
+                                               readonly> -
+                                        <input type="text"
+                                               class="phone-input readonly-style"
+                                               th:value="${userDTO.phonePart2}"
+                                               name="phonePart2"
+                                               readonly> -
+                                        <input type="text"
+                                               class="phone-input readonly-style"
+                                               th:value="${userDTO.phonePart3}"
+                                               name="phonePart3"
+                                               readonly>
+                                        <button class="editBtn" type="button">수정</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>주소</td>
+                                    <td>
+                                        <input th:value="${userDTO.zip}" type="text" id="zip" name="zip" placeholder="우편번호">
+                                        <button onclick="postcode()" type="button">우편번호검색</button>
+                                        <input th:value="${userDTO.addr1}" type="text" id="address" name="addr1" placeholder="주소 검색" style="width: 600px;"><br>
+                                        <input th:value="${userDTO.addr2}" type="text" id="address_detail" name="addr2" placeholder="상세주소 입력" style="width: 600px;">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="modify-btn">
+                            <button type="submit">수정하기</button>
+                        </div>
+                    </form>
+                    <div class="delete-btn">
+                        <form th:action="@{/my/withdraw}" method="post" id="withdrawForm" onsubmit="return confirmWithdrawal()">
+                            <button type="submit">탈퇴하기</button>
+                        </form>
+                        <script>
+                            function confirmWithdrawal() {
+                                let message = confirm('정말로 탈퇴하시겠습니까? 탈퇴 시 계정이 비활성화됩니다.');
+                                if(message){
+                                    location.href = '/user/logout';
+                                }
+                            }
+
+                            document.addEventListener('DOMContentLoaded', function() {
+                                document.getElementById('checkPasswordBtn').addEventListener('click', function() {
+                                    fetch('/my/info/check/password', {
+                                        method: 'GET'
+                                    })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.hasPassword) {
+                                                window.location.href = '/my/info/check';
+                                            } else {
+                                                alert('소셜 로그인(구글, 카카오, 네이버)은 비밀번호 변경이 불가합니다.');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            alert('서버 통신 중 오류가 발생했습니다.');
+                                        });
+                                });
+                            });
+                        </script>
+                    </div>
+                </article>
+            </section>
+        </main>
+        <!-- 메인 끝 -->
+        <!-- 푸터 시작 -->
+        <th:block th:include="/common/footer.html"/>
+        <!-- 푸터 끝 -->
+    </div>
+</body>
+</html>

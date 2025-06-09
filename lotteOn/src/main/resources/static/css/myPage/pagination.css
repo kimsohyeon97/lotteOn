@@ -1,0 +1,45 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    margin: 20px auto;
+}
+
+.pagination > a {
+    margin-right: 5px;
+    width: 35px;
+    height: 35px;
+    border: 1px solid #dedede;
+    box-sizing: border-box;
+    background-color: white;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.pagination > a.active {
+    background-color: #888;
+    color: white;
+    border: 1px solid #888;
+}
+
+.pagination > a:hover {
+    background-color: #d6d6d6;
+    color: white;
+    border: 1px solid #d6d6d6;
+}
+
+.pagination > a.prev {
+    margin-right: 20px;
+}
+
+.pagination > a.next {
+    margin-left: 15px;
+    margin-right: 0;
+}

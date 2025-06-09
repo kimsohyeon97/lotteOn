@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>환경설정 기본설정 : 롯데On</title>
+    <link rel="stylesheet" href="/css/admin/config.css">
+    <link rel="stylesheet" href="/css/layout/layout.css">
+    <link rel="stylesheet" href="/css/admin/admin.css">
+
+    <!-- 사이드바-->
+    <script src="/js/admin/sidebar.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function (){
+            const form = document.getElementById('hp-form');
+
+            form.addEventListener("submit", function (e){
+                e.preventDefault();
+
+                const hp = document.getElementById('hp').value;
+
+                if(hp.length>13){
+                    alert("전화번호는 총 13자리 입니다. 예) 02-1234-5677");
+                    return;
+                }
+
+                e.target.submit();
+            })
+        })
+    </script>
+
+    
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 헤더 시작 -->
+        <th:block th:include="/admin/inc/header.html"/>
+        <!-- 헤더 끝 -->
+        <main>
+            <section class="content">
+                <!-- 왼쪽 사이드바 -->
+                <th:block th:include="/admin/inc/sidebar.html"/>
+                <!-- 사이드바 끝-->
+                <!-- 오른쪽 글 -->
+                <article class="main_content_side">
+                    <!-- 여기부터 글 작성 -->
+                    <div class="main_head">
+                        <p class="main_head_title">기본설정</p>
+                        <div style="float: right;">
+                            <p style="font-size: 16px;">Home > 환경설정 ><span> 기본설정</span></p>
+                        </div>
+                    </div>
+
+                    <!-- 버전 정보 -->
+
+                    <p class="title">버전 정보</p>
+                    <div class="text_div">
+                        <p>현재 사이트 버전 입니다.</p>
+                    </div>
+
+                    <table class="version_table" style="margin-bottom: 50px;">
+                        <tr>
+                            <td>사이드 버전</td>
+                            <td>[[${appInfo.appVersion}]]</td>
+                        </tr>
+                    </table>
+
+                    <!-- 사이트 버전-->
+                    <p class="title">사이트</p>
+                    <div class="text_div">
+                        <p>브라우저 탭, 헤더 및 푸터 노출 정보입니다.</p>
+                    </div>
+
+                    <form th:action="@{/admin/config/site/modify}" method="post" class="m-50">
+                        <table class="version_table">
+                            <tr>
+                                <td>제목</td>
+                                <td>
+                                    <input type="text" name="title" th:value="${config.title}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>부재</td>
+                                <td>
+                                    <input type="text" name="subTitle" th:value="${config.subTitle}">
+                                </td>
+                            </tr>
+                        </table>
+                        <button type="submit" class="config_btn">수정하기</button>
+                    </form>
+
+                    <!-- 로고 -->
+
+                    <p class="title">로고</p>
+                    <div class="text_div">
+                        <p>브라우저 탭, 헤더 및 푸터 노출 로고입니다.</p>
+                    </div>
+                    
+                    <form th:action="@{/admin/config/image/modify}" enctype="multipart/form-data" method="post"  class="m-50">
+                        <table class="version_table">
+                            <tr>
+                                <td>헤더 로고</td>
+                                <td>
+                                    <input type="file" name="file1">
+                                    <span>크기 370 x 76 권장 : [[${config.headerLogo}]]</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>푸터 로고</td>
+                                <td>
+                                    <input type="file" name="file2">
+                                    <span>크기 155 x 36 권장 : [[${config.footerLogo}]]</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>파비콘</td>
+                                <td>
+                                    <input type="file" name="file3">
+                                    <span>크기 32 x 32 권장 : [[${config.favicon}]]</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <button type="submit" class="config_btn">수정하기</button>
+                    </form>
+
+                    <!-- 기업 정보 -->
+                    <p class="title">기업 정보</p>
+                    <div class="text_div">
+                        <p>푸터에 노출되는 기업 정보 입니다.</p>
+                    </div>
+
+                    <form th:action="@{/admin/config/company/modify}" method="post"  class="m-50">
+                        <table class="version_table">
+                            <tr>
+                                <td>상호명</td>
+                                <td>
+                                    <input type="text" th:value="${config.companyName}" name="companyName">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>대표이사</td>
+                                <td>
+                                    <input type="text" th:value="${config.ceoName}" name="ceoName">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>사업자등록번호</td>
+                                <td>
+                                    <input type="text" th:value="${config.businessNumber}" name="businessNumber">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>통신판매업신고</td>
+                                <td>
+                                    <input type="text" th:value="${config.onlineSalesNumber}" name="onlineSalesNumber">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>기본주소</td>
+                                <td>
+                                    <input type="text" th:value="${config.addr1}" name="addr1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>상세주소</td>
+                                <td>
+                                    <input type="text" th:value="${config.addr2}" name="addr2">
+                                </td>
+                            </tr>
+                        </table>
+                        <button type="submit" class="config_btn">수정하기</button>
+                    </form>
+
+                    <!-- 기업 정보 -->
+                    <p class="title">고객센터 정보</p>
+                    <div class="text_div">
+                        <p>푸터에 노출되는 고객센터 정보 입니다.</p>
+                    </div>
+
+                    <form th:action="@{/admin/config/customer/modify}" id="hp-form" method="post" class="m-50">
+                        <table class="version_table">
+                            <tr>
+                                <td>전화번호</td>
+                                <td>
+                                    <input type="text" th:value="${config.hp}" name="hp" id="hp">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>업무시간</td>
+                                <td>
+                                    <input type="text" th:value="${config.workingHours}" name="workingHours">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>이메일</td>
+                                <td>
+                                    <input type="text" th:value="${config.email}" name="email">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>전자금융거래 분쟁담당</td>
+                                <td>
+                                    <input type="text" th:value="${config.efinDispute}" name="efinDispute">
+                                </td>
+                            </tr>
+                        </table>
+                        <button type="submit" class="config_btn">수정하기</button>
+                    </form>
+
+                    <!-- 카피라이트 정보 -->
+                    <p class="title">고객센터 정보</p>
+                    <div class="text_div">
+                        <p>푸터에 노출되는 카피라이트 정보 입니다.</p>
+                    </div>
+
+                    <form th:action="@{/admin/config/copyright/modify}" method="post" class="m-50">
+                        <table class="version_table">
+                            <tr>
+                                <td>카피라이트</td>
+                                <td>
+                                    <input type="text" th:value="${config.copyright}" name="copyright">
+                                </td>
+                            </tr>
+                        </table>
+                        <button type="submit" class="config_btn">수정하기</button>
+                    </form>
+
+
+                </article>
+            </section>
+        </main>
+
+        <!-- 푸터 시작 -->
+        <th:block th:include="/admin/inc/footer.html"/>
+        <!-- 푸터 끝 -->
+    </div>
+</body>
+</html>

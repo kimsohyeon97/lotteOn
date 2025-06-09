@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/myPage/layout.css">
+    <link rel="stylesheet" href="/css/myPage/myPageMain.css">
+    <link rel="stylesheet" href="/css/common/table-main.css">
+    <link rel="stylesheet" href="/css/index_layout.css">
+    <link rel="stylesheet" href="/css/common/header.css">
+    <script src="/js/myPage/modal.js"></script>
+    <script src="/js/headerMenu.js"></script>
+
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 헤더 시작 -->
+        <th:block th:include="/common/header.html"/>
+        <!-- 헤더 끝 -->
+        <!-- 메인 시작 -->
+        <main>
+            <th:block th:insert="/myPage/inc/myShoppingInfo.html"></th:block>
+            <section class="content">
+                <!-- 왼쪽 사이드바 -->
+                <th:block th:include="/myPage/inc/sidebar.html"/>
+                <!-- 사이드바 끝-->
+                <!-- 오른쪽 글 -->
+                <article class="main_content_side">
+                    <div class="ad" th:if="${banner != null}">
+                        <img th:src="@{/upload/{image}(image=${banner.sName})}"
+                             th:style="'width:' + ${banner.width} + 'px;'
+                                            +'height:' + ${banner.height} + 'px;'"
+                             onerror="this.src='/images/가정의달.PNG';"
+                             th:attr="onclick=|location.href='${banner.link}'|"
+                             alt="lotteOn">
+                    </div>
+                    <div class="order-details">
+                        <div class="title-area">
+                            <h1>쿠폰내역</h1>
+                        </div>
+                        <div class="order-details-table">
+                            <table class="table-main">
+                                <tbody>
+                                    <tr>
+                                        <th>쿠폰번호</th>
+                                        <th>할인금액</th>
+                                        <th>쿠폰명</th>
+                                        <th>상태</th>
+                                        <th>최소주문금액</th>
+                                        <th>유효기간</th>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr th:each="couponIssue, i : ${couponIssueDTO.dtoList}">
+                                        <td th:text="${couponIssue.issueNo}"></td>
+                                        <td th:text="${couponIssue.coupon.benefit}"></td>
+                                        <td th:text="${couponIssue.coupon.couponName}"></td>
+                                        <td th:text="${couponIssue.coupon.state}"></td>
+                                        <td th:text="${couponIssue.coupon.minPrice} + 원"></td>
+                                        <td th:text="${#temporals.format(couponIssue.coupon.validTo, 'yyyy-MM-dd')}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="coupon-caution">
+                        <li>순금/골드바/돌반지/상품권 등 환금성 카테고리 및 중고 상품 및 프로모션 상품에는 쿠폰 사용이 제한됩니다.</li>
+                        <li>쿠폰 적용 가능한 금액기준은 판매자 상품별할인과 G마켓 추가할인이 모두 포함된 할인 적용가 입니다.</li>
+                        <li>중복쿠폰은 판매자 할인, G마켓 할인과 중복 적용 가능하며 하나의 상품당 한장의 중복쿠폰만 사용 가능합니다.</li>
+                        <li>항공 할인은 항공권 전용 할인으로 결제시점에 할인 혜택을 받으실 수 있습니다.</li>
+                        <li>항공권 예약취소 또는 환불시 적용했던 항공할인은 ID당 1회 한해서 다시 발급 됩니다.</li>
+                    </div>
+                </article>
+            </section>
+        </main>
+        <!-- 메인 끝 -->
+        <!-- 푸터 시작 -->
+        <th:block th:include="/common/footer.html"/>
+        <!-- 푸터 끝 -->
+    </div>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 회원 포인트 : 롯데On</title>
+    <link rel="stylesheet" href="/css/admin/member.css">
+    <link rel="stylesheet" href="/css/layout/layout.css">
+    <link rel="stylesheet" href="/css/admin/admin.css">
+
+    <!-- 사이드바-->
+    <!-- 사이드바-->
+    <script src="/js/admin/sidebar.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function (){
+
+            // 삭제 기능
+            // 개별 삭제 링크에 confirm 추가
+            document.querySelectorAll('.delete-link').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    if (!confirm("정말 삭제하시겠습니까?")) {
+                        e.preventDefault(); // 링크 이동 막기
+                    }
+                });
+            });
+
+            // 전체 체크박스
+            const deleteAllCheckbox = document.getElementById('deleteAll');
+
+            // 개별 체크박스
+            const deleteCheckboxes = document.querySelectorAll('input[name="deleteNo"]');
+
+            deleteAllCheckbox.addEventListener('change', function () {
+                const isChecked = this.checked;
+                deleteCheckboxes.forEach(cb => cb.checked = isChecked);
+            });
+
+            // 선택삭제 버튼 validation
+            document.querySelector('.point_list_form').addEventListener('submit', function(e) {
+                const checked = document.querySelectorAll('input[name="deleteNo"]:checked');
+                if (checked.length === 0) {
+                    e.preventDefault();
+                    alert('삭제할 항목을 선택해주세요.');
+                } else {
+                    const confirmDelete = confirm('선택한 항목을 정말 삭제하시겠습니까?');
+                    if (!confirmDelete) {
+                        e.preventDefault();
+                    }
+                }
+            });
+
+
+        });
+
+    </script>
+
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 헤더 시작 -->
+        <th:block th:include="/admin/inc/header.html"/>
+        <!-- 헤더 끝 -->
+        <main>
+            <section class="content">
+                <!-- 왼쪽 사이드바 -->
+                <th:block th:include="/admin/inc/sidebar.html"/>
+
+                <!-- 사이드바 끝-->
+                <!-- 오른쪽 글 -->
+                <article class="main_content_side">
+                    <!-- 여기부터 글 작성 -->
+                    <div class="main_head">
+                        <p class="main_head_title">포인트관리</p>
+                        <div style="float: right;">
+                            <p style="font-size: 16px;">Home > 회원관리 ><span> 포인트관리</span></p>
+                        </div>
+                    </div>
+
+                    <div class="select_div">
+                        <div class="select_box">
+                            <form th:action="@{/admin/member/point/search}">
+                                <select name="sortType" th:field="*{pageResponseDTO.sortType}">
+                                    <option value="아이디">아이디</option>
+                                    <option value="이름">이름</option>
+                                    <option value="지급내용">지급내용</option>
+                                </select>
+                                <input type="text" name="keyword" class="search_text" placeholder="검색어 입력">
+                                <input type="submit" class="search_btn" value="검색">
+                            </form>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/admin/point/delete}" class="point_list_form">
+                        <table>
+                            <thead>
+                                <th><input type="checkbox" id="deleteAll"></th>
+                                <th>번호</th>
+                                <th>아이디</th>
+                                <th>이름</th>
+                                <th>지급 포인트</th>
+                                <th>잔여 포인트</th>
+                                <th>지급 내용</th>
+                                <th>지급 날짜</th>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item, i : ${pageResponseDTO.dtoList}">
+                                    <td><input type="checkbox" name="deleteNo" th:value="${item.pointNo}" ></td>
+                                    <td>[[${pageResponseDTO.startNo - i.index}]]</td>
+                                    <td>[[${item.user.uid}]]</td>
+                                    <td>[[${item.user.name}]]</td>
+                                    <td>[[${item.point}]]P</td>
+                                    <td>[[${item.pointTotal}]]P</td>
+                                    <td>[[${item.pointDesc}]]</td>
+                                    <td th:text="${#temporals.format(item.pointDate, 'yyyy.MM.dd HH:mm:ss')}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="margin-top: 20px;">
+                            <button type="submit" class="delete_btn">선택삭제</button>
+                        </div>
+                    </form>
+                    <!-- 페이징 -->
+                    <div class="page">
+                        <th:block th:if="${pageResponseDTO.prev}">
+                            <a th:href="@{/admin/member/point/search(pg=${pageResponseDTO.start-1}, searchType=${pageResponseDTO.sortType} , keyword=${pageResponseDTO.keyword})}" class="prev">이전</a>
+                        </th:block>
+
+                        <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                            <a th:href="@{/admin/member/point/search(pg=${num} , searchType=${pageResponseDTO.sortType} , keyword=${pageResponseDTO.keyword})}" th:class="${num == pageResponseDTO.pg} ? 'current' : 'num'">[[${num}]]</a>
+                        </th:block>
+
+                        <th:block th:if="${pageResponseDTO.next}">
+                            <a th:href="@{/admin/member/point/search(pg=${pageResponseDTO.end+1} , searchType=${pageResponseDTO.sortType} , keyword=${pageResponseDTO.keyword} )}" class="next">다음</a>
+                        </th:block>
+                    </div>
+                    
+                </article>
+            </section>
+        </main>
+
+        <!-- 푸터 시작 -->
+        <th:block th:include="/admin/inc/footer.html"/>
+        <!-- 푸터 끝 -->
+    </div>
+
+</body>
+</html>

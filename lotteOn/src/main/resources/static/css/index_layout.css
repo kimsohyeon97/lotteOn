@@ -1,0 +1,178 @@
+
+/* 기본 설정 */
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    font-family: 'Noto Sans KR', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: #111;
+}
+
+input, textarea{
+    outline: none;
+    resize: none;
+}
+
+#wrapper{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+
+/* 푸터 */
+
+footer{
+    margin: 0 auto;
+    height: auto;
+    background-color: #F2F2F2;
+    overflow: hidden;
+}
+
+.footer{
+    width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    height: auto;
+}
+
+footer > .footer_info{
+    height: 40px;
+    width: 100%;
+    text-align: center;
+    padding-top: 20px;
+}
+
+footer > .footer_info  a{
+    margin-left: 20px;
+}
+
+
+footer > .footer_content{
+    height: 250px;
+    padding: 20px 0px 20px 0px;
+    width: 100%;
+    border-top: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.footer_content_detail{
+    width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.footer_content_detail img{
+    float: left;
+    margin-right: 40px;
+}
+
+.footer_content_detail > div{
+    float: left;
+    width: 400px;
+    height: 100%;
+}
+
+.footer_title{
+    padding-bottom: 5px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.64;
+    letter-spacing: -.3px;
+    color: #333;
+}
+
+.footer_sub_title{
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.58;
+    letter-spacing: -.2px;
+    color: #757575;
+    margin-bottom: 10px;
+}
+
+.footer_content_detail{
+    font-size: 12px;
+    line-height: 1.58;
+    letter-spacing: -.2px;
+    color: #757575;
+}
+
+.a_deco{
+    text-decoration: underline;
+    color: #757575;
+}
+
+.footer_btn{
+    padding: 5px 3px 3px 1px;
+    box-sizing: border-box;
+    text-decoration: none;
+    display: inline-block;
+    height: 30px;
+    border: 1px solid #DDDDDD;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+footer > .footer_version{
+    padding: 10px;
+    min-height: 40px;
+    height: auto;
+    width: 100%;
+    color: #757575;
+    text-align: center;
+}
+
+/* 메인 */
+#container {
+    width: 100%;
+    height: auto;
+    margin: 50px 0;
+    border: 1px solid yellowgreen;
+}
+
+main {
+    width: 1200px;
+    height: auto;
+    margin: 0 auto;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.main_content{
+    width: 980px;
+    height: auto;
+    box-sizing: border-box;
+    padding: 40px 100px 40px 100px;
+}
+
+.main_content_side{
+    width: 1000px;
+    height: auto;
+    box-sizing: border-box;
+    padding: 5px 40px 40px 40px;
+}
+
+.delete-btn button {
+    width: 60px;
+    height: 30px;
+    font-size: 14px;
+    font-weight: 400;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 40px;
+    background-color: #ff5555;
+}
+

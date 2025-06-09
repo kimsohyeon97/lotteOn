@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/layout/layout.css">
+    <link rel="stylesheet" href="/css/product/product_header.css">
+    <link rel="stylesheet" href="/css/product/order_completed.css">
+    <script src="/js/headerMenu.js"></script>
+    <title>주문완료 : 롯데On</title>
+</head>
+<body>
+<script src="/js/product/order_completed.js"></script>
+<div id="wrapper">
+    <th:block th:include="/common/header.html"/>
+    <main>
+        <section class="content">
+            <th:block th:include="/product/side.html"/>
+            <div class="order">
+                <h1>주문완료</h1>
+                <div id="tables-container">
+                    <table class="order_content">
+                        <tr>
+                            <th></th>
+                            <th>상품명</th>
+                            <th>수량</th>
+                            <th>판매가</th>
+                            <th>할인</th>
+                            <th>포인트</th>
+                            <th>배송비</th>
+                            <th>총합</th>
+                        </tr>
+                        <tr th:each="item : ${orderDTO.orderItems}">
+                            <td>
+                                <img th:src="@{${item.product.productImage.sNameList}}" alt="상품 이미지">
+                            </td>
+                            <td>
+                                <p class="vendor-name" th:text="${item.product.seller.company}">판매자명</p><br>
+                                <span th:text="${item.product.prodBrand}">브랜드</span><br>
+                                <span th:text="${item.product.prodName}">상품명</span>
+                            </td>
+                            <td class="quantity" th:text="${item.itemCount}">1</td>
+                            <td class="cart_price">
+                                <p class="price_original" th:data-unit="${item.product.prodPrice}"
+                                   th:text="${#numbers.formatInteger(item.product.prodPrice, 3, 'COMMA')}">0</p>
+                                <p class="price_total"
+                                   th:data-unit="${item.itemPrice}"
+                                   th:text="${#numbers.formatInteger(item.itemPrice, 3, 'COMMA')}">0</p>
+                            </td>
+                            <td class="discount-rate" th:text="${item.itemDiscount + '%'}">0%</td>
+                            <td class="point" th:text="${item.itemPoint}">0</td>
+                            <td class="shipping" th:text="${item.product.prodDeliveryFee == 0 ? '무료배송' : #numbers.formatInteger(item.product.prodDeliveryFee, 3, 'COMMA')}">0</td>
+                            <td class="total"
+                                th:text="${#numbers.formatInteger(item.itemPrice * item.itemCount, 3, 'COMMA')}">0</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="order_info">
+                    <p>주문정보</p>
+                    <table>
+                        <tr><th>주문번호</th><td th:text="${orderDTO.orderNo}"></td></tr>
+                        <tr><th>결제방법</th><td th:text="${orderDTO.payment}"></td></tr>
+                        <tr><th>주문자</th><td th:text="${orderDTO.orderSender}"></td></tr>
+                        <tr><th>연락처</th><td th:text="${orderDTO.senderHp}"></td></tr>
+                    </table>
+                </div>
+                <div class="shipping_info">
+                    <p>배송정보</p>
+                    <table>
+                        <tr><th>수취인</th><td th:text="${orderDTO.orderReceiver}"></td></tr>
+                        <tr><th>연락처</th><td th:text="${orderDTO.receiverHp}"></td></tr>
+                        <tr><th>배송지 주소</th><td th:text="${orderDTO.orderAddr}"></td></tr>
+                    </table>
+                </div>
+                <div class="cart_summary">
+                    <p>결제정보</p>
+                    <table>
+                        <tr>
+                            <th>총 상품수</th>
+                            <td id="summary-count" th:text="${orderDTO.totalQuantity}">0</td>
+                        </tr>
+                        <tr>
+                            <th>총 상품금액</th>
+                            <td id="summary-amount" th:text="${#numbers.formatInteger(orderDTO.originalTotalPrice, 1, 'COMMA')}">0</td>
+                        </tr>
+                        <tr>
+                            <th>총 할인금액</th>
+                            <td id="summary-discount" th:text="${#numbers.formatInteger(orderDTO.totalDiscount + orderDTO.pointDiscount + orderDTO.couponDiscount, 1, 'COMMA')}">0</td>
+                        </tr>
+                        <tr>
+                            <th>배송비</th>
+                            <td id="summary-shipping" th:text="${orderDTO.shippingFee == 0 ? '무료배송' : #numbers.formatInteger(orderDTO.shippingFee, 1, 'COMMA')}">0</td>
+                        </tr>
+                        <tr>
+                            <th>적립 포인트</th>
+                            <td id="summary-point" th:text="${orderDTO.totalPoint}">0</td>
+                        </tr>
+                        <tr class="total">
+                            <th>총</th>
+                            <td th:text="${#numbers.formatInteger(orderDTO.orderTotalPrice, 1, 'COMMA')}" id="summary-total">0</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+    <th:block th:include="/common/footer.html"/>
+</div>
+</body>
+</html>

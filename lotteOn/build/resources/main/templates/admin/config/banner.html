@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 배너관리 : 롯데On      </title>
+    <link rel="stylesheet" href="/css/admin/config.css">
+    <link rel="stylesheet" href="/css/layout/layout.css">
+    <link rel="stylesheet" href="/css/admin/admin.css">
+
+    <!-- 사이드바-->
+    <script src="/js/admin/sidebar.js"></script>
+
+
+    <style>
+        .operation{
+            color: #36B04B;
+        }
+
+        .stop{
+            color: #F40000;
+        }
+
+        .active{
+            color: red;
+        }
+
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function (){
+
+            const params = new URLSearchParams(location.search);
+            const title = document.querySelector(".this-location");
+
+            const path = params.get("cate");
+
+            let change = false;
+
+            if(path != null){
+                if (path.includes("MAIN2")) {
+                    document.getElementById("c2").classList.add("active");
+                    change = true;
+                }else if (path.includes("PRODUCT1")) {
+                    document.getElementById("c3").classList.add("active");
+                    change = true;
+                }else if (path.includes("MEMBER1")) {
+                    document.getElementById("c4").classList.add("active");
+                    change = true;
+                }else if (path.includes("MY1")) {
+                    document.getElementById("c5").classList.add("active");
+                    change = true;
+                }
+            }
+
+            if(!change){
+                document.getElementById("c1").classList.add("active");
+            }
+
+
+
+
+
+
+
+            // 전체 체크박스
+            const deleteAllCheckbox = document.getElementById('deleteAll');
+
+            // 개별 체크박스
+            const deleteCheckboxes = document.querySelectorAll('input[name="deleteNo"]');
+
+            deleteAllCheckbox.addEventListener('change', function () {
+                const isChecked = this.checked;
+                deleteCheckboxes.forEach(cb => cb.checked = isChecked);
+            });
+
+            // 선택삭제 버튼 validation
+            document.querySelector('.banner_form').addEventListener('submit', function(e) {
+                const checked = document.querySelectorAll('input[name="deleteNo"]:checked');
+                if (checked.length === 0) {
+                    e.preventDefault();
+                    alert('삭제할 항목을 선택해주세요.');
+                } else {
+                    const confirmDelete = confirm('선택한 항목을 정말 삭제하시겠습니까?');
+                    if (!confirmDelete) {
+                        e.preventDefault();
+                    }
+                }
+            });
+
+
+        });
+
+    </script>
+
+
+
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 헤더 시작 -->
+        <th:block th:include="/admin/inc/header.html"/>
+        <!-- 헤더 끝 -->
+        <main>
+            <section class="content">
+                <!-- 왼쪽 사이드바 -->
+                <th:block th:include="/admin/inc/sidebar.html"/>
+                <!-- 사이드바 끝-->
+                <!-- 오른쪽 글 -->
+                <article class="main_content_side">
+                    <!-- 여기부터 글 작성 -->
+                    <div class="main_head">
+                        <p class="main_head_title">배너관리</p>
+                        <div style="float: right;">
+                            <p style="font-size: 16px;">Home > 환경설정 ><span> 배너관리</span></p>
+                        </div>
+                    </div>
+
+                    <!-- 버전 정보 -->
+                    <div class="banner">
+                        <ul>
+                            <a th:href="@{/admin/config/banner}"><li id="c1">메인상단배너</li></a>
+                            <a th:href="@{/admin/config/banner(cate=MAIN2)}"><li id="c2">메인슬라이더배너</li></a>
+                            <a th:href="@{/admin/config/banner(cate=PRODUCT1)}"><li id="c3">상품 상세보기 배너</li></a>
+                            <a th:href="@{/admin/config/banner(cate=MEMBER1)}"><li id="c4">회원로그인 배너</li></a>
+                            <a th:href="@{/admin/config/banner(cate=MY1)}"><li id="c5">마이페이지 배너</li></a>
+                        </ul>
+                    </div>
+                    <p class="title">[[${title}]]</p>
+
+                    <form th:action="@{/admin/config/banner/delete}" class="banner_form">
+                        <table class="banner_table">
+                            <thead>
+                                <th><input type="checkbox" id="deleteAll"></th>
+                                <th>번호</th>
+                                <th>이미지</th>
+                                <th>배너정보</th>
+                                <th>배너위치</th>
+                                <th>시작일</th>
+                                <th>종료일</th>
+                                <th>시작시간</th>
+                                <th>종료시간</th>
+                                <th>상태</th>
+                                <th>관리</th>
+                            </thead>
+                            <tbody>
+                                <tr th:each="banner : ${bannerDTOS}">
+                                    <td>
+                                        <input type="checkbox" th:value="${banner.bno}" name="deleteNo">
+                                    </td>
+                                    <td>[[${banner.bno}]]</td>
+                                    <td><img th:src="@{/upload/{version}(version=${banner.SName})}" alt=""></td>
+                                    <td style="text-align: left;">
+                                        배너명 : [[${banner.bannerName}]] <br>
+                                        크기 : [[${banner.width}]] x [[${banner.height}]] <br>
+                                        배경색 : [[${banner.color}]] <br>
+                                        <a th:href="${banner.link}" style="text-decoration: underline">배너링크</a>
+                                    </td>
+                                    <td>[[${banner.cate}]]</td>
+                                    <td>[[${banner.startDay}]]</td>
+                                    <td>[[${banner.endDay}]]</td>
+                                    <td>[[${banner.startTime}]]</td>
+                                    <td>[[${banner.endTime}]]</td>
+                                    <td th:class="${banner.state == '활성'} ? 'operation' : 'stop'">[[${banner.state}]]</td>
+                                    <td>
+                                        <a th:href="@{/admin/config/banner/change(bno=${banner.bno}, cate=${banner.cate}, state='활성' )}">[활성화]</a><br>
+                                        <a th:href="@{/admin/config/banner/change(bno=${banner.bno}, cate=${banner.cate}, state='비활성')}">[비활성]</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div style="margin-top: 20px;">
+                            <button type="submit" class="config_btn" style="background-color: #BFBFBF; float: left;">선택삭제</button>
+                            <button type="button" id="banner_register" class="config_btn" style="float: right;">배너등록</button>
+                        </div>
+                        
+                    </form>
+
+                    <th:block th:include="/admin/inc/modal/bannerModel"/>
+                
+
+                </article>
+            </section>
+        </main>
+
+        <!-- 푸터 시작 -->
+        <th:block th:include="/admin/inc/footer.html"/>
+        <!-- 푸터 끝 -->
+    </div>
+</body>
+</html>

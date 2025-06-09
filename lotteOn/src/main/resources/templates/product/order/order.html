@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/layout/layout.css">
+    <link rel="stylesheet" href="/css/product/product_header.css">
+    <link rel="stylesheet" href="/css/product/order.css">
+    <script src="/js/headerMenu.js"></script>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <title>주문하기 : 롯데On</title>
+</head>
+<body>
+<script src="/js/product/order.js"></script>
+    <div id="wrapper">
+        <th:block th:include="/common/header.html"/>
+        <main>
+            <section class="content">
+                <th:block th:include="/product/side.html"/>
+                <div class="order">
+                    <h1>주문하기</h1>
+                    <form action="/order/submit" method="post" id="orderForm">
+                    <div id="tables-container">
+                        <table class="order_content" th:each="cart : ${cartDTOList}">
+                            <th:block th:if="${cart.cartNo != null and cart.cartNo != 0}">
+                                <input type="hidden" name="cartNo" th:value="${cart.cartNo}">
+                            </th:block>
+                            <tr>
+                                <th></th>
+                                <th>상품명</th>
+                                <th>옵션</th>
+                                <th>수량</th>
+                                <th>판매가</th>
+                                <th>할인</th>
+                                <th>포인트</th>
+                                <th>배송비</th>
+                                <th>총합</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img th:src="@{${cart.product.productImage.sNameThumb3}}" alt="상품 이미지">
+                                </td>
+                                <td>
+                                    <p class="vendor-name" th:text="${cart.product.seller.company}">판매처</p><br>
+                                    <span th:text="${cart.product.prodBrand}">브랜드명</span><br>
+                                    <span th:text="${cart.product.prodName}">상품명</span>
+                                </td>
+                                <td class="options">
+                                    <ul>
+                                        <li th:if="${cart.opt1 != null and cart.opt1 != ''}" th:text="${cart.opt1 + ' : ' + cart.opt1Cont}"></li>
+                                        <li th:if="${cart.opt2 != null and cart.opt2 != ''}" th:text="${cart.opt2 + ' : ' + cart.opt2Cont}"></li>
+                                        <li th:if="${cart.opt3 != null and cart.opt3 != ''}" th:text="${cart.opt3 + ' : ' + cart.opt3Cont}"></li>
+                                        <li th:if="${cart.opt4 != null and cart.opt4 != ''}" th:text="${cart.opt4 + ' : ' + cart.opt4Cont}"></li>
+                                        <li th:if="${cart.opt5 != null and cart.opt5 != ''}" th:text="${cart.opt5 + ' : ' + cart.opt5Cont}"></li>
+                                        <li th:if="${cart.opt6 != null and cart.opt6 != ''}" th:text="${cart.opt6 + ' : ' + cart.opt6Cont}"></li>
+                                    </ul>
+                                </td>
+                                <td class="quantity" th:text="${cart.cartProdCount}">1</td>
+                                <td class="cart_price">
+                                    <p class="price_original" th:data-unit="${cart.product.prodPrice}" th:text="${#numbers.formatInteger(cart.product.prodPrice, 3, 'COMMA')}">0</p>
+                                    <p class="price_total" th:with="discountedPrice=${cart.product.prodPrice * (100 - cart.product.prodDiscount) / 100}" th:data-unit="${discountedPrice}" th:text="${#numbers.formatInteger(discountedPrice, 3, 'COMMA')}">0</p>
+                                </td>
+                                <td class="discount-rate" th:text="${cart.product.prodDiscount + '%'}">0%</td>
+                                <td><input type="text" class="point" name="itemPoint" th:data-rank="${userDetailsDTO.rank}"/></td>
+                                <td class="shipping" th:text="${cart.product.prodDeliveryFee == 0 ? '무료배송' : #numbers.formatInteger(cart.product.prodDeliveryFee, 3, 'COMMA')}">0</td>
+                                <td class="total" th:with="itemTotal=${(cart.product.prodPrice * (100 - cart.product.prodDiscount) / 100) * cart.cartProdCount + cart.product.prodDeliveryFee}" th:text="${#numbers.formatInteger(itemTotal, 3, 'COMMA')}">0</td>
+                            </tr>
+                        </table>
+
+                        <div th:if="${cartDTOList == null or cartDTOList.isEmpty()}">
+                            <p>장바구니에 담긴 상품이 없습니다.</p>
+                        </div>
+
+                        </div>
+                        <div id="order_info"
+                             data-th-attr-name="${cartDTOList[0].user.name}"
+                             data-th-attr-hp="${cartDTOList[0].user.hp}"
+                             data-th-attr-zip="${cartDTOList[0].user.zip}"
+                             data-th-attr-addr1="${cartDTOList[0].user.addr1}"
+                             data-th-attr-addr2="${cartDTOList[0].user.addr2}">
+                            <div>
+                                <p>배송정보</p>
+                                <input type="checkbox" id="sameAsOrderCheckbox"> 주문자와 동일
+                                <table>
+                                    <tr>
+                                        <th>수령자</th>
+                                        <td><input type="text" name="orderReceiver" id="recipientName"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>휴대폰</th>
+                                        <td><input type="text" name="receiverHp" id="recipientHp"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>우편번호</th>
+                                        <td><input type="text" name="receiverZip" id="recipientZip"><button type="button">검색</button></td>
+                                    </tr>
+                                    <tr>
+                                        <th>기본주소</th>
+                                        <td><input type="text" name="receiverAddr1" id="recipientAddr1"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>상세주소</th>
+                                        <td><input type="text" name="receiverAddr2" id="recipientAddr2"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>요청사항</th>
+                                        <td><input type="text" name="orderContent" id="orderContent"></td>
+                                    </tr>
+                                </table>
+                                <p>할인정보</p>
+                                <div class="discount_info">
+                                    <div>
+                                        현재포인트 : <span th:text="${userDetailsDTO.userPoint}"></span>점
+                                        <input type="text" name="usedPoint"><button type="button">사용하기</button><br>
+                                        <p>포인트 5,000점 이상이면 현금처럼 사용가능</p>
+                                    </div>
+                                    <div>
+                                        <span>쿠폰 적용 : </span>
+                                        <button type="button" id="showCouponModalButton">쿠폰 확인</button>
+                                        <input type="hidden" name="issueNo" id="couponData">
+                                        <div id="couponModal" class="modal" style="display: none;">
+                                            <div class="modal-content">
+                                                <span class="close-button">&times;</span>
+                                                <p><span>상품할인혜택</span>을 적용해 보세요!</p>
+                                                <div class="coupon-item"
+                                                     th:each="couponIssue : ${couponIssueDTOList}"
+                                                     th:attr="data-issue-no=${couponIssue.issueNo},
+                                                              data-issued-by=${couponIssue.coupon.issuedBy},
+                                                               data-state=${couponIssue.state}">
+                                                    <p th:text="${couponIssue.coupon.benefit}"></p>
+                                                    <p th:text="${couponIssue.coupon.couponName}"></p>
+                                                    <p th:text="|쿠폰 종류: ${couponIssue.coupon.couponType} (${couponIssue.coupon.minPrice} 이상 구매 시 사용 가능)|"></p>
+                                                    <span class="coupon-expiry"
+                                                          th:if="${couponIssue.coupon.validTo != null and couponIssue.coupon.validTo.isBefore(T(java.time.LocalDate).now().plusDays(7))}"
+                                                          th:text="|${T(java.time.temporal.ChronoUnit).DAYS.between(T(java.time.LocalDate).now(), couponIssue.coupon.validTo)}일 남음|">
+                                                    </span>
+                                                </div>
+                                                <div class="modal-buttons">
+                                                    <button type="button">쿠폰 적용하기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p>결제방법</p>
+                                <div class="payment-methods">
+                                    <label class="payment-option"><input type="radio" name="payment" value="신용카드">신용카드</label>
+                                    <label class="payment-option"><input type="radio" name="payment" value="체크카드">체크카드</label>
+                                    <label class="payment-option"><input type="radio" name="payment" value="계좌이체">계좌이체</label>
+                                    <label class="payment-option"><input type="radio" name="payment" value="토스">토스</label>
+                                    <label class="payment-option"><input type="radio" name="payment" value="네이버">네이버</label>
+                                    <label class="payment-option">
+                                        <input type="radio" name="payment" value="카카오페이" required>카카오페이
+                                        <span class="kakaopay-label">pay</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="cart_summary">
+                                <p>최종결제정보</p>
+                                <table>
+                                    <tr>
+                                        <th>상품수</th>
+                                        <td id="summary-count"></td>
+                                        <input type="hidden" name="quantity">
+                                    </tr>
+                                    <tr>
+                                        <th>상품금액</th>
+                                        <td id="summary-amount"></td>
+                                        <input type="hidden" name="originalTotalPrice">
+                                    </tr>
+                                    <tr>
+                                        <th>할인금액</th>
+                                        <td id="summary-discount"></td>
+                                        <input type="hidden" name="totalDiscount">
+                                    </tr>
+                                    <tr>
+                                        <th>배송비</th>
+                                        <td id="summary-shipping"></td>
+                                        <input type="hidden" name="shippingFee">
+                                    </tr>
+                                    <tr>
+                                        <th>포인트할인</th>
+                                        <td id="summary-point-discount"></td>
+                                        <input type="hidden" name="pointDiscount">
+                                    </tr>
+                                    <tr>
+                                        <th>쿠폰할인</th>
+                                        <td id="summary-coupon-discount"></td>
+                                        <input type="hidden" name="couponDiscount">
+                                    </tr>
+                                    <tr>
+                                        <th>적립 포인트</th>
+                                        <td id="summary-point"></td>
+                                        <input type="hidden" name="totalPoint">
+                                    </tr>
+                                    <tr class="total">
+                                        <th>총</th>
+                                        <td id="summary-total"></td>
+                                        <input type="hidden" name="orderTotalPrice">
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><button type="submit">주문하기</button></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+        <div id="loading" class="loading-overlay">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <div class="loading-text">⏳ 주문 중입니다...</div>
+            </div>
+        </div>
+        <th:block th:include="/common/footer.html"/>
+    </div>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객센터 : 롯데On</title>
+    <link rel="stylesheet" href="/css/layout/layout.css">
+    <link rel="stylesheet" href="/css/cs/index.css">
+    <link rel="stylesheet" href="/css/common/header.css">
+    <script src="/js/headerMenu.js"></script>
+
+    <style>
+        .notice-list, .qna-list{
+            width: 100%;
+        }
+
+        .notice-list, .qna-list tbody tr td{
+            font-size: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+            padding-top: 8px;
+        }
+
+        .notice-list td{
+            font-size: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+            padding-top: 8px;
+        }
+
+        .qna-list tbody tr td a{
+            font-size: 15px;
+        }
+
+        .qna-list tbody tr td:nth-child(2){
+            width: 100px;
+        }
+
+        .qna-list tbody tr td:nth-child(3){
+            width: 80px;
+        }
+
+        .notice-list tbody tr td:nth-child(2){
+            width: 80px;
+        }
+
+        .notice-list tr td a{
+            font-size: 15px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 헤더 시작 -->
+        <th:block th:include="/common/header.html"/>
+        <!-- 헤더 끝 -->
+        <!-- 메인 시작 -->
+        <main>
+            <section class="content">
+                <!-- 글 시작-->
+                <article class="cs-main_content">
+                    <div class="cs-title"><span>롯데 ON</span>이 도와드릴게요!</div>
+                    <div class="cs-section">
+                        <h2>공지사항 <a th:href="@{/cs/notice/listAll}" class="more-link">전체보기</a></h2>
+                        <table class="notice-list">
+                            <tr th:each="notice, i : ${noticeResponseDTO.dtoList}">
+                                <td><a th:href="@{/cs/notice/view(no=${notice.no})}">[[${'[' + notice.cate + ']'}]] [[${notice.title}]]</a></td>
+                                <td th:text="${#temporals.format(notice.wdate, 'yyyy-MM-dd')}"></td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="cs-section">
+                        <h2>자주하는질문 <a th:href="@{/cs/faq/list(cateV1=회원)}" class="more-link">전체보기</a></h2>
+                        <div class="faq-icons">
+                            <div class="faq-icon">
+                                <a th:href="@{/cs/faq/list(cateV1=회원)}">
+                                    <img src="/images/cs/manager.png" alt="회원">
+                                    <span>회원</span>
+                                </a>
+                            </div>
+                            <div class="faq-icon">
+                                <a th:href="@{/cs/faq/list(cateV1=쿠폰-이벤트)}">
+                                    <img src="/images/cs/coupon.png" alt="쿠폰/이벤트">
+                                    <span>쿠폰/이벤트</span>
+                                </a>
+                            </div>
+                            <div class="faq-icon">
+                                <a th:href="@{/cs/faq/list(cateV1=주문-결제)}">
+                                    <img src="/images/cs/clipboard.png" alt="주문/결제">
+                                    <span>주문/결제</span>
+                                </a>
+                            </div>
+                            <div class="faq-icon">
+                                <a th:href="@{/cs/faq/list(cateV1=배송)}">
+                                    <img src="/images/cs/delivery.png" alt="배송">
+                                    <span>배송</span>
+                                </a>
+                            </div>
+                            <div class="faq-icon">
+                                <a th:href="@{/cs/faq/list(cateV1=취소-반품-교환)}">
+                                    <img src="/images/cs/refund.png" alt="취소/반품/교환">
+                                    <span>취소/반품/교환</span>
+                                </a>
+                            </div>
+                            <div class="faq-icon">
+                                <a th:href="@{/cs/faq/list(cateV1=안전거래)}">
+                                    <img src="/images/cs/cash.PNG" alt="안전거래">
+                                    <span>안전거래</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cs-section">
+                        <h2>문의하기 <a th:href="@{/cs/qna/list(cateV1=회원)}" class="more-link">전체보기</a></h2>
+                        <table class="qna-list">
+                            <tr th:each="inquiry, i : ${inquiryResponseDTO.dtoList}">
+                                <td><a th:href="@{/cs/qna/view(no=${inquiry.no})}">[[${'[' + inquiry.cateV1 + ']'}]] [[${inquiry.title}]]</a></td>
+                                <td th:text="${#strings.concat(#strings.substring(inquiry.user.name, 0, 1), '**')}"></td>
+                                <td th:text="${#temporals.format(inquiry.wdate, 'yyyy-MM-dd')}"></td>
+                            </tr>
+                        </table>
+                        <a th:href="@{/cs/qna/write}" class="write-inquiry">문의하기 작성</a>
+                    </div>
+                    
+                    <div class="cs-section consult-boxes">
+                        <h2>상담안내</h2>
+                        <div class="consult-cards">
+                            <div class="consult-card">
+                                <h3>이용안내</h3>
+                                <p>일반회원 / 비회원</p>
+                                <p class="consult-number">1566 - 0001 <span>평일 09:00 ~ 18:00</span></p>
+                                <p>스마트앱 전용</p>
+                                <p class="consult-number">1566 - 0002 <span>365일 09:00 ~ 18:00</span></p>
+                            </div>
+                            <div class="consult-card">
+                                <h3>판매상담이용안내</h3>
+                                <p>판매고객</p>
+                                <p class="consult-number">1566 - 5700 <span>평일 09:00 ~ 18:00</span></p>
+                                <p>판매자가입및서류접수안내</p>
+                            </div>
+                            <div class="consult-card">
+                                <h3>자주 묻는 질문</h3>
+                                <p>빠른 해결이 필요하신가요?</p>
+                                <p class="consult-number">
+                                    <a th:href="@{/cs/faq/list(cateV1=회원)}" style="color:inherit; text-decoration:underline;">FAQ 바로가기</a>
+                                    <span>24시간 이용 가능</span>
+                                </p>
+                                <p>문의 전 FAQ를 확인해 보세요!</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <!-- 글 끝-->
+            </section>
+        </main>
+        <!-- 메인 끝 -->
+
+        <!-- 푸터 시작 -->
+        <th:block th:include="/common/footer.html"/>
+        <!-- 푸터 끝 -->
+    </div>
+</body>
+</html>

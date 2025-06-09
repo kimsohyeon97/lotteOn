@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>롯데On 로그인 : 롯데On</title>
+  <link rel="stylesheet" th:href="@{/css/layout/layout.css}" />
+  <link rel="stylesheet" th:href="@{/css/member/login.css}" />
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+</head>
+<body>
+
+<div id="toast-container"></div>
+
+<div id="wrapper">
+  <!-- 헤더 시작 -->
+  <header>
+    <div class="header_main">
+      <div class="user_menu">
+        <div>
+          <a th:href="@{/}">HOME |</a>
+          <a th:href="@{/user/member/login}">로그인 |</a>
+          <a th:href="@{/user/member/join}">회원가입 </a>
+
+        </div>
+      </div>
+
+      <div class="logo">
+        <a href="/">
+        <img th:src="@{/images/logo.png}" alt="lotteOn" />
+        </a>
+      </div>
+    </div>
+  </header>
+  <!-- 헤더 끝 -->
+
+  <!-- 메인 시작 -->
+  <main>
+    <section class="content">
+      <article class="main_content">
+        <p class="title">로그인</p>
+
+        <div class="login">
+          <!-- 왼쪽 로그인 영역 -->
+          <div class="login-left">
+
+            <!-- 에러 메시지 영역 추가 -->
+            <div class="login-error" th:if="${param.code != null}">
+              <span th:if="${param.code == '100'}" class="error-text">아이디 또는 비밀번호가 일치하지 않습니다.</span>
+              <span th:if="${param.code == '101'}" class="notice-text">로그아웃 되었습니다.</span>
+              <span th:if="${param.code == '102'}" class="error-text">탈퇴한 회원입니다. 다시 가입해주세요.</span>
+            </div>
+
+            <form method="post" th:action="@{/user/member/login}">
+              <div class="login-main-row">
+                <!-- 입력 필드 -->
+                <div class="login-rows">
+                  <div class="login-row">
+
+                    <input type="text" name="uid" id="userName" placeholder="아이디" />
+                  </div>
+
+                  <div class="login-row">
+
+                    <input type="password" name="pass" id="userPassword" placeholder="비밀번호" />
+                  </div>
+                </div>
+
+                <!-- 로그인 버튼 -->
+                <div class="login-btn-area">
+                  <input type="submit" value="로그인" class="login-button" />
+                </div>
+              </div>
+
+              <!-- 옵션 줄 -->
+              <div class="login-options">
+                <label> <input type="checkbox" name="autoLogin" value="true" /> 자동 로그인</label>
+                <span>
+                    | <a th:href="@{/user/member/findAccount}">아이디/비밀번호 찾기</a>
+                    | <a th:href="@{/user/member/join}">회원가입</a>
+                </span>
+              </div>
+
+              <!-- SNS 로그인 아이콘 -->
+              <div class="login-social">
+                <a th:href="@{/oauth2/authorization/kakao}">
+                  <img th:src="@{/images/member/kakao.png}" alt="카카오" />
+                </a>
+                <a th:href="@{/oauth2/authorization/naver}">
+                  <img th:src="@{/images/member/naver.png}" alt="네이버" />
+                </a>
+                <a th:href="@{/oauth2/authorization/google}">
+                  <img th:src="@{/images/member/google.png}" alt="구글" />
+                </a>
+              </div>
+            </form>
+          </div>
+
+          <!-- 오른쪽 배너 -->
+          <div class="login-banner">
+            <div class="banner" th:if="${banner != null}">
+              <img th:src="@{/upload/{image}(image=${banner.sName})}"
+                   th:style="'width:' + ${banner.width} + 'px;'
+               +'height:' + ${banner.height} + 'px;'"
+                   onerror="this.src='/images/member/banner.png';"
+                   th:attr="onclick=|location.href='${banner.link}'|"
+                   alt="lotteOn">
+            </div>
+          </div>
+        </div>
+
+        <!-- 인증 마크 -->
+        <div class="award-logo">
+          <img th:src="@{/images/member/Auth-icon-1.png}" alt="기관인증" />
+          <img th:src="@{/images/member/Auth-icon-2.png}" alt="기관인증" />
+          <img th:src="@{/images/member/Auth-icon-3.png}" alt="기관인증" />
+          <img th:src="@{/images/member/Auth-icon-4.png}" alt="기관인증" />
+
+
+        </div>
+      </article>
+    </section>
+  </main>
+  <!-- 메인 끝 -->
+
+  <!-- 푸터 시작 -->
+  <footer>
+    <div class="footer_info">
+      <div>
+        <a href="#">회사소개</a>
+        <a href="#">서비스이용약관</a>
+        <a href="#">개인정보처리방침</a>
+        <a href="#">전자금융거래약관</a>
+      </div>
+    </div>
+    <div class="footer_content">
+      <div class="footer_content_detail">
+        <img th:src="@{/images/footer_logo.png}" alt="footer_logo" />
+        <div>
+          <p class="footer_title">LotteOn Project</p>
+          <p>
+            개발자 : 우상호, 최명기, 김소현, 오재영, 홍준혁 <br />
+            주소 : 부산광역시 부산진구 부전동 266-2 그린컴퓨터아카데미
+            <br /><br />
+            사업자등록번호 : 529-85-00774(롯데쇼핑(주) e커머스사업부) <br />
+            통신판매업 신고 : 2024-서울강남-04439 사업자 정보 확인 <br />
+            호스팅 서비스사업자 : 롯데쇼핑(주) e커머스사업부 <br />
+          </p>
+
+          <p class="footer_sub_title" style="margin-top: 10px">
+            롯데쇼핑 e커머스 사업부 에스크로
+          </p>
+          <p>
+            고객님의 안전거래를 위해 현금 등으로 결제 시 결제금액 전액에 대해 <br />
+            소비자 피해 방지 서비스를 이용합니다.
+          </p>
+        </div>
+        <div>
+          <p class="footer_sub_title">고객센터</p>
+          <p>
+            전화번호 : 1899-7000(유료) <br />
+            E-mail : lotteon@lotte.net <br />
+            <a href="#" class="a_deco">분쟁해결기준</a><br />
+            <a href="#" class="footer_btn"> FAQ 보기 </a>
+            <a href="#" class="footer_btn"> 1대1 문의하기 </a>
+            <a href="#" class="footer_btn"> 고객센터 </a>
+            <a href="#" class="footer_btn"> 공지사항 </a>
+          </p>
+
+          <p class="footer_sub_title">전자금융거래 분쟁 담당</p>
+          <p>Tel : 1899-7000(유료) E-mail : lotteon@lotte.net</p>
+          <a href="#" class="a_deco">안전거래센터</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer_version">
+      <p>
+        롯데쇼핑(주)는 통신판매중개자이며 통신판매의 거래당사자가 아닙니다.
+        입점판매자가 등록한 상품정보 및 거래에 대해 롯데쇼핑(주)는 일체 책임을 지지 않습니다.
+      </p>
+      <p>Copyright © LOTTESHOPPING Co., LTD. All rights reserved.</p>
+    </div>
+  </footer>
+  <!-- 푸터 끝 -->
+</div>
+
+<!-- 토스트 알림 CSS -->
+<style>
+  #toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+
+  .toast {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: translateX(400px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    max-width: 350px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .toast.show {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .toast.success {
+    border-left: 4px solid #28a745;
+  }
+
+  .toast.success::before {
+    content: "✅";
+    margin-right: 10px;
+    font-size: 18px;
+  }
+
+  .toast.info {
+    border-left: 4px solid #007bff;
+  }
+
+  .toast.info::before {
+    content: "ℹ️";
+    margin-right: 10px;
+    font-size: 18px;
+  }
+
+  .toast.error {
+    border-left: 4px solid #dc3545;
+  }
+
+  .toast.error::before {
+    content: "❌";
+    margin-right: 10px;
+    font-size: 18px;
+  }
+
+  .toast-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+
+  .toast-message {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .toast-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .toast-close:hover {
+    color: #333;
+  }
+
+  .toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: #28a745;
+    animation: progress 4s linear;
+  }
+
+  .toast.success .toast-progress {
+    background: #28a745;
+  }
+
+  .toast.info .toast-progress {
+    background: #007bff;
+  }
+
+  .toast.error .toast-progress {
+    background: #dc3545;
+  }
+
+  @keyframes progress {
+    from { width: 100%; }
+    to { width: 0%; }
+  }
+</style>
+
+<!-- 토스트 알림 JavaScript -->
+<script>
+  // 토스트 알림 함수
+  function showToast(title, message, type = 'success', duration = 4000) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `
+        <button class="toast-close" onclick="closeToast(this)">&times;</button>
+        <div class="toast-title">${title}</div>
+        <div class="toast-message">${message}</div>
+        <div class="toast-progress"></div>
+      `;
+
+    container.appendChild(toast);
+
+    // 애니메이션 트리거
+    setTimeout(() => toast.classList.add('show'), 100);
+
+    // 자동 제거
+    setTimeout(() => {
+      closeToast(toast.querySelector('.toast-close'));
+    }, duration);
+  }
+
+  // 토스트 닫기 함수
+  function closeToast(closeBtn) {
+    const toast = closeBtn.parentElement;
+    toast.classList.remove('show');
+
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 300);
+  }
+
+  // URL 파라미터 확인 및 토스트 표시
+  document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const successType = urlParams.get('success');
+
+    if (successType === 'user') {
+      showToast(
+              '회원가입 완료! 🎉',
+              '일반 회원가입이 완료되었습니다.<br>신규 가입 쿠폰이 발급되었습니다. 마이페이지에서 확인하세요!',
+              'success',
+              5000
+      );
+    } else if (successType === 'seller') {
+      showToast(
+              '판매자 가입 완료!',
+              '판매자 계정이 성공적으로 생성되었습니다.',
+              'info',
+              4000
+      );
+    }
+
+    // 기존 에러 메시지도 토스트로 변환 (선택사항)
+    const paramCode = urlParams.get('code');
+    if (paramCode) {
+      let title = '';
+      let message = '';
+      let type = 'error';
+
+      switch(paramCode) {
+        case '100':
+          title = '로그인 실패';
+          message = '아이디 또는 비밀번호가 일치하지 않습니다.';
+          break;
+        case '101':
+          title = '로그아웃 완료';
+          message = '로그아웃 되었습니다.';
+          type = 'info';
+          break;
+        case '102':
+          title = '계정 상태 오류';
+          message = '탈퇴한 회원입니다. 다시 가입해주세요.';
+          break;
+      }
+
+      if (title && message) {
+        showToast(title, message, type);
+      }
+    }
+
+    // URL 파라미터 제거 (뒤로가기 시 중복 표시 방지)
+    if (successType || paramCode) {
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
+    }
+  });
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/myPage/layout.css">
+    <link rel="stylesheet" href="/css/myPage/myPageMain.css">
+    <link rel="stylesheet" href="/css/common/table-main.css">
+    <link rel="stylesheet" href="/css/myPage/pagination.css">
+    <link rel="stylesheet" href="/css/index_layout.css">
+    <link rel="stylesheet" href="/css/common/header.css">
+    <link rel="stylesheet" href="/css/myPage/star.css">
+    <script src="/js/headerMenu.js"></script>
+
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 헤더 시작 -->
+        <th:block th:include="/common/header.html"/>
+        <!-- 헤더 끝 -->
+        <!-- 메인 시작 -->
+        <main>
+            <th:block th:insert="/myPage/inc/myShoppingInfo.html"></th:block>
+            <section class="content">
+                <!-- 왼쪽 사이드바 -->
+                <th:block th:include="/myPage/inc/sidebar.html"/>
+                <!-- 사이드바 끝-->
+                <!-- 오른쪽 글 -->
+                <article class="main_content_side">
+                    <div class="ad" th:if="${banner != null}">
+                        <img th:src="@{/upload/{image}(image=${banner.sName})}"
+                             th:style="'width:' + ${banner.width} + 'px;'
+                                            +'height:' + ${banner.height} + 'px;'"
+                             onerror="this.src='/images/가정의달.PNG';"
+                             th:attr="onclick=|location.href='${banner.link}'|"
+                             alt="lotteOn">
+                    </div>
+                    <div class="order-details">
+                        <div class="title-area">
+                            <h1>나의리뷰</h1>
+                        </div>
+                        <div class="order-details-table">
+                            <table class="table-main">
+                                <tbody>
+                                    <tr>
+                                        <th>번호</th>
+                                        <th>상품명</th>
+                                        <th>내용</th>
+                                        <th>평점</th>
+                                        <th>작성일</th>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                <tr th:each="review, i : ${reviewDTO.dtoList}">
+                                    <td th:text="${reviewDTO.startNo - i.index}"></td>
+                                    <td th:text="${#strings.length(review.product.prodName) > 15 ?
+                                        #strings.substring(review.product.prodName, 0, 15) + '...' :
+                                        review.product.prodName}"></td>
+                                    <td th:text="${review.content}"></td>
+                                    <td>
+                                        <span class="review-star" th:text="${'★★★★★'.substring(0, review.rating) + '☆☆☆☆☆'.substring(0, 5 - review.rating)}"></span>
+                                        <span class="score" th:text="' [' + ${#strings.substring(review.rating, 0, 1)} + '점]'"></span>
+                                    </td>
+                                    <td th:text="${#temporals.format(review.wdate, 'yyyy-MM-dd')}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="notice-footer">
+                        <div class="pagination">
+                            <a class="prev" th:if="${reviewDTO.prev}" th:href="@{/my/review(pg=${reviewDTO.start - 1}, size=${reviewDTO.size})}">이전</a>
+                            <th:block th:each="i: ${#numbers.sequence(reviewDTO.start, reviewDTO.end)}">
+                                <a th:href="@{/my/review(pg=${i}, size=${reviewDTO.size})}" th:text="${i}" th:class="${i == reviewDTO.pg ? 'active' : ''}"></a>
+                            </th:block>
+                            <a class="next" th:if="${reviewDTO.next}" th:href="@{/my/review(pg=${reviewDTO.end + 1}, size=${reviewDTO.size})}">다음</a>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </main>
+        <!-- 메인 끝 -->
+        <!-- 푸터 시작 -->
+        <th:block th:include="/common/footer.html"/>
+        <!-- 푸터 끝 -->
+    </div>
+</body>
+</html>

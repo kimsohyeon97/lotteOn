@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의하기</title>
+    <link rel="stylesheet" href="/css/cs/qna/view.css">
+    <link rel="stylesheet" href="/css/layout/layout.css">
+    <link rel="stylesheet" href="/css/index_layout.css">
+    <link rel="stylesheet" href="/css/common/header.css">
+    <script src="/js/headerMenu.js"></script>
+
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 헤더 시작 -->
+        <th:block th:include="/common/header.html"/>
+        <!-- 헤더 끝 -->
+        <main>
+            <section class="content">
+                <!-- 왼쪽 사이드바 -->
+                <div class="view-page">
+                    <th:block th:include="/cs/qna/inc/sidebar.html"/>
+                </div>
+                <!-- 사이드바 끝-->
+                <!-- 오른쪽 글 -->
+                <article class="main_content_side">
+                    <div class="notice-container">
+                        <h2>문의하기</h2>
+                        <div class="notice-view">
+                            <div class="notice-header">
+                                <div class="notice-title">
+                                    <p>질문</p>
+                                    <div>
+                                        <span th:text="${#temporals.format(inquiryDTO.wdate, 'yyyy-MM-dd')}"></span>
+                                        <span th:text="${inquiryDTO.user.name}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notice-content">
+                                <p>[[${inquiryDTO.content}]]</p>
+                            </div>
+                        </div>
+                        <div class="notice-view" th:if="${inquiryDTO.answer != null}">
+                            <div class="notice-header">
+                                <div class="notice-title">
+                                    <p>응답</p>
+                                </div>
+                            </div>
+                            <div class="notice-content">
+                                <p class="content">[[${inquiryDTO.answer}]]</p>
+                            </div>
+                        </div>
+                        <div class="notice-footer">
+                            <button type="button" th:onclick="|location.href='@{/cs/qna/list(cateV1=${inquiryDTO.cateV1})}'|">목록</button>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </main>
+
+        <!-- 푸터 시작 -->
+        <th:block th:include="/common/footer.html"/>
+        <!-- 푸터 끝 -->
+    </div>
+</body>
+</html>

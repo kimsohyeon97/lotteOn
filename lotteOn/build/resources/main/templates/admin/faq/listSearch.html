@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관리자 자주묻는질문 목록 : 롯데On</title>
+    <link rel="stylesheet" href="/css/admin/faq/list.css" />
+    <link rel="stylesheet" href="/css/layout/layout.css" />
+    <link rel="stylesheet" href="/css/admin/admin.css" />
+
+    <!-- 사이드바-->
+    <script src="/js/admin/sidebar.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function (){
+
+        updateSubCategory();
+
+        // 삭제 기능
+        // 개별 삭제 링크에 confirm 추가
+        document.querySelectorAll('.delete-link').forEach(function(link) {
+          link.addEventListener('click', function(e) {
+            if (!confirm("정말 삭제하시겠습니까?")) {
+              e.preventDefault(); // 링크 이동 막기
+            }
+          });
+        });
+
+        document.getElementById("write").addEventListener("click", function () {
+          window.location.href = "/admin/cs/faq/write";
+        });
+
+        // 전체 체크박스
+        const deleteAllCheckbox = document.getElementById('deleteAll');
+
+        // 개별 체크박스
+        const deleteCheckboxes = document.querySelectorAll('input[name="deleteNo"]');
+
+        deleteAllCheckbox.addEventListener('change', function () {
+          const isChecked = this.checked;
+          deleteCheckboxes.forEach(cb => cb.checked = isChecked);
+        });
+
+        // 선택삭제 버튼 validation
+        document.querySelector('.member_list_form').addEventListener('submit', function(e) {
+          const checked = document.querySelectorAll('input[name="deleteNo"]:checked');
+          if (checked.length === 0) {
+            e.preventDefault();
+            alert('삭제할 항목을 선택해주세요.');
+          } else {
+            const confirmDelete = confirm('선택한 항목을 정말 삭제하시겠습니까?');
+            if (!confirmDelete) {
+              e.preventDefault();
+            }
+          }
+        });
+
+        const subCategory = document.querySelector('#subCategory');
+
+        subCategory.addEventListener('change', function() {
+          this.form.submit(); // 값이 바뀌면 바로 submit
+        });
+
+      });
+
+      function updateSubCategory() {
+        var category = document.getElementById('sortType').value;
+        var subCategory = document.getElementById('subCategory');
+
+        // 서브 카테고리 초기화
+        subCategory.innerHTML = '';
+
+        var subCategories = [];
+
+        // 선택된 카테고리에 맞는 서브 항목 설정
+        if (category === '회원') {
+          subCategories = ['유형선택','가입', '탈퇴', '회원정보', '로그인'];
+        } else if (category === '쿠폰-혜택-이벤트') {
+          subCategories = ['유형선택','쿠폰-할인혜택', '포인트', '제휴', '이벤트'];
+        } else if (category === '주문-결제') {
+          subCategories = ['유형선택','상품', '결제', '구매내역', '영수증-증빙'];
+        } else if (category === '배송') {
+          subCategories = ['유형선택','배송상태-기간', '배송정보확인/변경', '해외배송', '당일배송', '해외직구'];
+        } else if (category === '취소-반품-교환') {
+          subCategories = ['유형선택','반품신청-철회', '반품정보확인-변경', '교환 AS신청-철회', '교환정보확인-변경', '취소신청-철회', '취소확인-환불정보'];
+        } else if (category === '여행-숙박-항공') {
+          subCategories = ['유형선택','여행-숙박', '항공'];
+        } else if (category === '안전거래') {
+          subCategories = ['유형선택','서비스 이용규칙 위반', '지식재산권침해', '법령 및 정책위반 상품', '게시물 정책위반', '직거래-외부거래유도', '표시광고', '청소년 위해상품-이미지'];
+        }
+
+        // 서브 카테고리 항목을 추가
+        subCategories.forEach(function(subCat) {
+          var option = document.createElement('option');
+          option.value = subCat;
+          option.textContent = subCat;
+          subCategory.appendChild(option);
+        });
+      }
+
+    </script>
+
+  </head>
+  <body>
+    <div id="wrapper">
+      <!-- 헤더 시작 -->
+      <th:block th:include="/admin/inc/header.html"/>
+      <!-- 헤더 끝 -->
+      <main>
+        <section class="content">
+          <!-- 왼쪽 사이드바 -->
+          <th:block th:include="/admin/inc/sidebar.html"/>
+
+          <!-- 사이드바 끝-->
+          <!-- 오른쪽 글 -->
+          <article class="main_content_side">
+            <!-- 여기부터 글 작성 -->
+            <div class="main_head">
+              <p class="main_head_title">자주묻는질문 목록</p>
+              <div style="float: right">
+                <p style="font-size: 16px">
+                  Home > 고객센터 ><span>자주묻는질문</span>
+                </p>
+              </div>
+            </div>
+
+            <div class="select_div">
+              <div class="select_box">
+                <form th:action="@{/admin/cs/faq/search}" id="cate">
+                  <select id="sortType" name="sortType" th:field="*{pageResponseDTO.sortType}" onchange="updateSubCategory()" style="width: 150px">
+                    <option value="회원">회원</option>
+                    <option value="쿠폰-혜택-이벤트">쿠폰-혜택-이벤트</option>
+                    <option value="주문-결제">주문-결제</option>
+                    <option value="배송">배송</option>
+                    <option value="취소-반품-교환">취소-반품-교환</option>
+                    <option value="여행-숙박-항공">여행-숙박-항공</option>
+                    <option value="안전거래">안전거래</option>
+                  </select>
+                  <select id="subCategory" name="searchType" style="width: 150px" th:field="*{pageResponseDTO.searchType}">
+                    <option value="유형선택">유형선택</option>
+                    <option value="가입">가입</option>
+                    <option value="탈퇴">탈퇴</option>
+                    <option value="회원정보">회원정보</option>
+                    <option value="로그인">로그인</option>
+                  </select>
+                </form>
+              </div>
+            </div>
+
+            <form th:action="@{/admin/cs/faq/delete}" class="member_list_form">
+              <table>
+                <thead>
+                  <th><input type="checkbox" id="deleteAll" /></th>
+                  <th>번호</th>
+                  <th>1차유형</th>
+                  <th>2차유형</th>
+                  <th>제목</th>
+                  <th>날짜</th>
+                  <th>관리</th>
+                </thead>
+                <tbody>
+                  <tr th:each="item, i : ${pageResponseDTO.dtoList}">
+                    <td>
+                      <input type="checkbox" name="deleteNo" th:value="${item.no}" />
+                    </td>
+                    <td>[[${pageResponseDTO.startNo - i.index}]]</td>
+                    <td>[[${item.cateV1}]]</td>
+                    <td>[[${item.cateV2}]]</td>
+                    <td style="text-align: left"><a th:href="@{/admin/cs/faq/view(no=${item.no})}">[[${item.title}]]</a></td>
+                    <td th:text="${#temporals.format(item.wdate, 'yyyy.MM.dd HH:mm:ss')}"></td>
+                    <td>
+                      <a th:href="@{/admin/cs/faq/delete(deleteNo=${item.no})}" class="delete-link">[ 삭제 ]</a><br />
+                      <a th:href="@{/admin/cs/faq/modify(no=${item.no})}">[ 수정 ]</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div style="margin-top: 20px">
+                <button type="submit" class="delete_btn">선택삭제</button>
+                <button type="button" id="write" class="register_btn">작성하기</button>
+                <!--작성하기 버튼-->
+              </div>
+            </form>
+
+            <div class="page">
+              <th:block th:if="${pageResponseDTO.prev}">
+                <a th:href="@{/admin/cs/faq/search(pg=${pageResponseDTO.start-1}, searchType=${pageResponseDTO.searchType}), sortType=${pageResponseDTO.sortType}" class="prev">이전</a>
+              </th:block>
+
+              <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                <a th:href="@{/admin/cs/faq/search(pg=${num} , searchType=${pageResponseDTO.searchType} , sortType=${pageResponseDTO.sortType})}" th:class="${num == pageResponseDTO.pg} ? 'current' : 'num'">[[${num}]]</a>
+              </th:block>
+
+              <th:block th:if="${pageResponseDTO.next}">
+                <a th:href="@{/admin/cs/faq/search(pg=${pageResponseDTO.end+1} , searchType=${pageResponseDTO.searchType} , sortType=${pageResponseDTO.sortType})}" class="next">다음</a>
+              </th:block>
+            </div>
+          </article>
+        </section>
+      </main>
+
+      <!-- 푸터 시작 -->
+      <th:block th:include="/admin/inc/footer.html"/>
+      <!-- 푸터 끝 -->
+    </div>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>환경설정 버전관리 : 롯데On</title>
+    <link rel="stylesheet" href="/css/admin/config.css">
+    <link rel="stylesheet" href="/css/layout/layout.css">
+    <link rel="stylesheet" href="/css/admin/admin.css">
+
+    <!-- 사이드바-->
+    <script src="/js/admin/sidebar.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 전체 체크박스
+            const deleteAllCheckbox = document.getElementById('deleteVnoAll');
+
+            // 개별 체크박스
+            const deleteCheckboxes = document.querySelectorAll('input[name="deleteVno"]');
+
+            deleteAllCheckbox.addEventListener('change', function () {
+                const isChecked = this.checked;
+                deleteCheckboxes.forEach(cb => cb.checked = isChecked);
+            });
+
+            // 선택삭제 버튼 validation
+            document.querySelector('.version_form').addEventListener('submit', function(e) {
+                const checked = document.querySelectorAll('input[name="deleteVno"]:checked');
+                if (checked.length === 0) {
+                    e.preventDefault();
+                    alert('삭제할 항목을 선택해주세요.');
+                }else{
+                    if (!confirm("정말 삭제하시겠습니까?")) {
+                        e.preventDefault(); // 링크 이동 막기
+                    }
+                }
+            });
+
+        });
+    </script>
+
+
+</head>
+<body>
+    <div id="wrapper">
+        <!-- 헤더 시작 -->
+        <th:block th:include="/admin/inc/header.html"/>
+        <!-- 헤더 끝 -->
+        <main>
+            <section class="content">
+                <!-- 왼쪽 사이드바 -->
+                <th:block th:include="/admin/inc/sidebar.html"/>
+
+                <!-- 사이드바 끝-->
+                <!-- 오른쪽 글 -->
+                <article class="main_content_side">
+                    <!-- 여기부터 글 작성 -->
+                    <div class="main_head">
+                        <p class="main_head_title">버전관리</p>
+                        <div style="float: right;">
+                            <p style="font-size: 16px;">Home > 환경설정 ><span> 버전관리</span></p>
+                        </div>
+                    </div>
+
+                    <!-- 카테고리 관리-->
+                    <p class="title">버전 목록</p>
+                    <div class="text_div">
+                        <p>사이트 버전 목록입니다.</p>
+                    </div>
+
+                    <form th:action="@{/admin/config/version/delete}" method="post" class="version_form">
+                        <table>
+                            <thead>
+                                <th>
+                                    <input type="checkbox" id="deleteVnoAll">
+                                </th>
+                                <th>번호</th>
+                                <th>버전</th>
+                                <th>작성자</th>
+                                <th>등록일시</th>
+                                <th>변경내역</th>
+                            </thead>
+                            <tbody>
+                                <tr th:each="version, i : ${verions.dtoList}">
+                                    <td>
+                                        <input type="checkbox" name="deleteVno" th:value="${version.vno}" >
+                                    </td>
+                                    <td>[[${version.vno}]]</td>
+                                    <td>[[${version.version}]]</td>
+                                    <td>[[${version.uid}]]</td>
+                                    <td th:text="${#temporals.format(version.wdate, 'yyyy.MM.dd HH:mm:ss')}"></td>
+                                    <td>
+                                        <a href="#" class="version_view_btn"
+                                           th:attr="data-version=${version.version}, data-content=${version.content}">
+                                            [ 확인 ]
+                                        </a>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        <div class="button_div">
+                            <button type="submit" class="config_btn" style="background-color: #BFBFBF; float: left;">선택삭제</button>
+                            <button id="banner_register" class="config_btn" style="float: right;">등록</button>
+                        </div>
+                    </form>
+                    
+                    <!-- 페이징 -->
+                    <div class="page">
+                        <th:block th:if="${verions.prev}">
+                            <a th:href="@{/admin/config/version(pg=${verions.start-1})}" class="prev">이전</a>
+                        </th:block>
+
+                        <th:block th:each="num:${#numbers.sequence(verions.start, verions.end)}">
+                            <a th:href="@{/admin/config/version(pg=${num})}" th:class="${num == verions.pg} ? 'current' : 'num'">[[${num}]]</a>
+                        </th:block>
+
+                        <th:block th:if="${verions.next}">
+                            <a th:href="@{/admin/config/version(pg=${verions.end+1})}" class="next">다음</a>
+                        </th:block>
+                    </div>
+                </article>
+            </section>
+        </main>
+
+        <!-- 푸터 시작 -->
+        <th:block th:include="/admin/inc/footer.html"/>
+        <!-- 푸터 끝 -->
+    </div>
+
+    <!-- 모달 -->
+    <th:block th:include="/admin/inc/modal/versionModal.html"/>
+
+</body>
+</html>

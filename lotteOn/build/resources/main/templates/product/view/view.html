@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/layout/layout.css">
+    <link rel="stylesheet" href="/css/product/product_header.css">
+    <link rel="stylesheet" href="/css/product/detail.css">
+    <script src="/js/headerMenu.js"></script>
+    <!--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
+    <title>상품상세보기 : 롯데On</title>
+</head>
+<body>
+    <script src="/js/product/view.js"></script>
+<div id="wrapper">
+    <th:block th:include="/common/header.html"/>
+    <main>
+        <section class="content">
+            <th:block th:include="/product/side.html"/>
+            <div class="product">
+                <div class="bar">
+                    <div>
+                        <a href="#">HOME</a>&nbsp;&nbsp;>&nbsp;&nbsp;
+                        <a th:text="${productDTO.mainCategoryName}" href="#">1차 카테고리</a>&nbsp;&nbsp;&gt;&nbsp;&nbsp;
+                        <a th:text="${productDTO.subCategory.subCategoryName}" href="#">2차 카테고리</a>
+                    </div>
+                </div>
+                <div class="product_page">
+                    <div>
+                        <img th:src="@{${productDTO.productImage.sNameMain}}" alt="상품 이미지">
+                    </div>
+                    <form th:action="@{/product/order/direct}" method="post">
+                        <input type="hidden" id="productNo" name="prodNo" th:value="${productDTO.prodNo}">
+                        <table>
+                            <tr>
+                                <td colspan="2">
+                                    <span class="department" th:text="${productDTO.company}">회사명</span>
+                                    <span class="brand" th:text="' ' + ${productDTO.prodBrand} + ' >'">브랜드명 ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="product_name" th:text="${productDTO.prodName}">상품명</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <a href="#">
+                                        <span>★&nbsp;<span th:text="${productDTO.ratingAvg}">0.0</span></span>
+                                        <span>&nbsp;<span th:text="${productDTO.reviewCount}">0</span>건</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <span class="sale" th:text="|${productDTO.prodDiscount}%|">5%</span>
+                                    <span class="price_current"
+                                          th:text="|${T(java.lang.String).format('%,d원', (productDTO.prodPrice * (100 - productDTO.prodDiscount)) / 100)}|">
+                                        </span>
+                                    <span class="price_original"
+                                          th:text="|${T(java.lang.String).format('%,d원', productDTO.prodPrice)}|">
+                                        </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <button type="button" class="coupon">주문 시 적용되는 할인 확인하기</button>
+                                    <div id="couponModal" class="modal">
+                                        <div class="modal-content">
+                                            <span class="close-button">&times;</span>
+                                            <p>
+                                                <th:block th:with="isLoggedIn=${#authentication.principal != 'anonymousUser'}">
+                                                    <span th:if="${isLoggedIn}" th:text="${#authentication.principal.user.name}"></span>
+                                                </th:block>
+                                                </span> 님만을 위한<br>
+                                                <span>상품할인혜택</span>을 적용해 보세요!
+                                            </p>
+                                            <div id="couponList">
+                                                <p>현재 적용 가능한 쿠폰이 없습니다.</p>
+                                            </div>
+                                            <div class="modal-buttons">
+                                                <button type="button">할인 혜택 받기</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="deliver">
+                                <td>배송정보</td>
+                                <td>
+                                    <span id="arrivalDate"></span> 이내 도착확률 92%<br>
+                                    <span th:if="${productDTO.prodDeliveryFee == 0}">배송비 무료</span>
+                                    <span th:if="${productDTO.prodDeliveryFee != 0}"
+                                          th:text="|배송비 ${#numbers.formatInteger(productDTO.prodDeliveryFee, 0)}원|">
+                                        </span>
+                                </td>
+                            </tr>
+                            <th:block th:each="i : ${#numbers.sequence(0, 5)}">
+                                <tr class="choice" th:if="${productDTO.option[i] != null and productDTO.option[i].length() > 0}">
+                                    <td>
+                                        [[${productDTO.option[i]}]]
+                                        <input type="hidden" th:name="'opt' + ${i + 1}" th:value="${productDTO.option[i]}">
+                                    </td>
+                                    <td>
+                                        <select th:name="'opt' + ${i + 1} + 'Cont'">
+                                            <th:block th:each="opt : ${productDTO.options[i]}" th:if="${opt != null and opt != ''}">
+                                                <option th:text="${opt}" th:value="${opt}"></option>
+                                            </th:block>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            <tr class="quantity-css">
+                                <td>
+                                    <div class="quantity-box">
+                                        <button type="button" class="btn-minus">-</button>
+                                        <span id="quantity">1</span>
+                                        <input type="hidden" class="quantity-input" name="quantity" value="1">
+                                        <button type="button" class="btn-plus">+</button>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="price_total"
+                                          th:text="|${T(java.lang.String).format('%,d원', (productDTO.prodPrice * (100 - productDTO.prodDiscount)) / 100)}|">
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <button type="button" class="cart">장바구니 담기</button>
+                                    <button type="submit" class="buy">바로 구매하기</button>
+                                </td>
+                            </tr>
+                            <tr class="product_banner">
+                                <td colspan="2">
+                                    <img th:src="@{/upload/{image}(image=${banner.sName})}"
+                                         th:style="'width:' + ${banner.width} + 'px;'
+                                            +'height:' + ${banner.height} + 'px;'"
+                                         onerror="this.src='/images/product/product_banner.png';"
+                                         th:attr="onclick=|location.href='${banner.link}'|"
+                                         alt="lotteOn">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                    <div class="tabs">
+                        <ul class="tab-menu">
+                            <li class="active" data-tab="detail">상세정보</li>
+                            <li th:attr="data-tab='review'" th:text="'리뷰(' + ${reviewPageResponseDTO.total} + ')'"></li>
+                            <li th:attr="data-tab='qna'" th:text="'Q&A(' + ${inquiryPageResponseDTO.total} + ')'"></li>
+                            <li data-tab="exchange">교환/반품 안내</li>
+                        </ul>
+                        <div class="tab-content">
+                            <input type="hidden" id="prodNo" th:value="${productDTO.prodNo}">
+                            <div id="detail" class="tab-pane active">
+                                <th:block th:include="/product/view/detail.html"/>
+                            </div>
+                            <div id="review" class="tab-pane">
+                                <th:block th:include="/product/view/review.html"/>
+                            </div>
+                            <div id="qna" class="tab-pane">
+                                <th:block th:include="/product/view/qna.html"/>
+                            </div>
+                            <div id="exchange" class="tab-pane">
+                                <th:block th:include="/product/view/exchange.html"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <th:block th:include="/common/footer.html"/>
+</div>
+</body>
+</html>

@@ -1,0 +1,85 @@
+input[type="radio"] {
+    display: none;
+}
+input[type="radio"] + span {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background: #ffffff;
+    cursor: pointer;
+    transition: background 0.15s, border 0.15s;
+}
+input[type="radio"]:checked + span {
+    border: 2px solid black;
+}
+
+.searchSpace{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 3px solid #EEEEEE;
+    padding: 5px;
+}
+
+.searchSpace_point{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 3px solid #EEEEEE;
+    padding: 5px;
+    width: 570px;
+    float: right;
+}
+
+
+
+.searchSpace .datepicker{
+    padding: 5px 5px;
+    font-size: 13px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background: #ffffff;
+    margin-left: 5px;
+    
+}
+
+
+.search_form select{
+    width: 100px;
+    padding: 5px 5px;
+    border: 1px solid #aaa; 
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+.search_form input{
+    padding: 5px 10px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+.search_form button{
+    padding: 5px 10px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.searchSpace >p{
+    margin-right: auto;
+    font-size: 14px;
+}
+
+.searchSpace_point p{
+    margin-right: 5px;
+}
+
+
+

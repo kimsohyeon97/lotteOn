@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>관리자 자주묻는질문 보기 : 롯데On</title>
+    <link rel="stylesheet" href="/css/admin/faq/view.css" />
+    <link rel="stylesheet" href="/css/layout/layout.css" />
+    <link rel="stylesheet" href="/css/admin/admin.css" />
+
+    <!-- 사이드바-->
+    <script src="/js/admin/sidebar.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function (){
+
+        // 삭제 기능
+        // 개별 삭제 링크에 confirm 추가
+        document.querySelectorAll('.delete_button').forEach(function(link) {
+          link.addEventListener('click', function(e) {
+            if (!confirm("정말 삭제하시겠습니까?")) {
+              e.preventDefault(); // 링크 이동 막기
+            }
+          });
+        });
+
+        document.getElementById("modify").addEventListener("click", function () {
+          window.location.href = "/admin/cs/faq/write";
+        });
+
+        document.getElementById("list").addEventListener("click", function () {
+          window.location.href = "/admin/cs/faq/list";
+        });
+
+
+
+
+      });
+
+    </script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <!-- 헤더 시작 -->
+      <th:block th:include="/admin/inc/header.html"/>
+      <!-- 헤더 끝 -->
+      <main>
+        <section class="content">
+          <!-- 왼쪽 사이드바 -->
+          <th:block th:include="/admin/inc/sidebar.html"/>
+
+          <!-- 사이드바 끝-->
+          <!-- 오른쪽 글 -->
+          <article class="main_content_side">
+            <!-- 여기부터 글 작성 -->
+            <div class="main_head">
+              <p class="main_head_title">자주묻는질문 보기</p>
+              <div style="float: right">
+                <p style="font-size: 16px">
+                  Home > 고객센터 ><span>자주묻는질문</span>
+                </p>
+              </div>
+            </div>
+
+            <div class="Blank_box"></div>
+
+            <form th:action="@{/admin/cs/faq/delete}" class="reply_list_form">
+              <input type="hidden" name="deleteNo" th:value="${faqDTO.no}">
+              <table>
+                <tbody>
+                  <tr>
+                    <td class="label">유형</td>
+                    <td>[[${faqDTO.cateV2}]]</td>
+                  </tr>
+
+                  <tr>
+                    <td class="label">제목</td>
+                    <td>[[${faqDTO.title}]]</td>
+                  </tr>
+
+                  <tr>
+                    <td class="label">내용</td>
+                    <td>
+                      [[${faqDTO.content}]]
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="button_group">
+                <button type="submit" class="delete_button">삭제</button>
+                <button type="button" id="modify" class="modify_button">수정</button>
+                <button type="button" id="list" class="list_button">목록</button>
+              </div>
+            </form>
+          </article>
+        </section>
+      </main>
+
+      <!-- 푸터 시작 -->
+      <th:block th:include="/admin/inc/footer.html"/>
+      <!-- 푸터 끝 -->
+    </div>
+  </body>
+</html>

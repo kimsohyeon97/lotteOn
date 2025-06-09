@@ -1,0 +1,49 @@
+<p th:text="'리뷰 ' + ${reviewPageResponseDTO.avgRate} + ' / 5'"></p>
+
+
+<div class="reviews">
+  <div>
+    <p th:text="'총 ' + ${reviewPageResponseDTO.total} + '건'"></p>
+    <div>
+      <a href="#" class="sort-link" data-sort-type="highestRate">평점 높은 순</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a href="#" class="sort-link" data-sort-type="lowestRate">평점 낮은 순</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a href="#" class="sort-link" data-sort-type="latest">최신순</a>
+    </div>
+  </div>
+  <div th:each="review : ${reviewPageResponseDTO.dtoList}" class="reviews_content">
+    <p th:text="${#strings.substring(review.uid, 0, 4) + '***'}"></p>
+
+    <div class="stars">
+      <img src="/images/product/full_star.png"
+           th:each="i : ${#numbers.sequence(1, review.rating)}"
+           alt="★">
+      <p th:text="${review.rating}">5</p>
+    </div>
+
+    <p th:text="'판매자 : ' +${review?.product?.company}">판매자 : 롯데백화점 본점</p>
+
+    <p th:utext="${review.content}">
+      리뷰 내용
+    </p>
+
+    <img th:if="${review.sNameImage1 != null}" th:src="${review.sNameImage1}" alt="리뷰 이미지">
+    <img th:if="${review.sNameImage2 != null}" th:src="${review.sNameImage2}" alt="리뷰 이미지">
+  </div>
+
+  <div class="reviews_page">
+    <th:block th:if="${reviewPageResponseDTO.prev}">
+      <a href="#" class="prev">&lt;</a>
+    </th:block>
+    <th:block th:each="num : ${#numbers.sequence(reviewPageResponseDTO.start, reviewPageResponseDTO.end)}">
+      <a href="#" th:class="${num == reviewPageResponseDTO.pg} ? 'current' : 'num'" th:data-page="${num}">
+        [[${num}]]
+      </a>
+    </th:block>
+    <th:block th:if="${reviewPageResponseDTO.next}">
+      <a href="#" class="next">&gt;</a>
+    </th:block>
+  </div>
+
+
+</div>
+

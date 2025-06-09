@@ -1,0 +1,44 @@
+<p>Q&A ( <th:block th:text="${inquiryPageResponseDTO.total}"></th:block> )</p>
+<div>
+    <p>
+        답변은 <span>마이롯데>나의문의내역</span>에서 확인하실 수 있습니다.<br>
+        처음 확인 시, 필터가 적용된 상태로 <span>비밀글 제외한 Q&A</span>가 노출됩니다.
+    </p>
+    <button type="button">문의하기</button>
+</div>
+
+<th:block th:each="inquiry : ${inquiryPageResponseDTO.dtoList}">
+    <div class="qna_content">
+        <p th:text="${inquiry.cateV1} + ' > ' + ${inquiry.cateV2}"></p>
+        <p th:text="${inquiry.content}"></p>
+        <div class="answer" th:if="${inquiry.answer != null}">
+            <p th:text="${inquiry.answer}"></p>
+            <p>롯데쇼핑(주)본점<span>판매자</span></p>
+        </div>
+        <div class="no-answer" th:if="${inquiry.answer == null}">
+            <p>답변 대기 중입니다.</p>
+        </div>
+        <div>
+            <a href="#">답변달기</a>
+            <p th:text="${#temporals.format(inquiry.wdate, 'yyyy.MM.dd')}"></p>
+        </div>
+    </div>
+</th:block>
+
+<div id="qnaModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3>문의 내용</h3>
+        <p id="modalInquiryContent"></p>
+        <h3>답변</h3>
+        <div id="modalAnswerContent"></div>
+    </div>
+</div>
+
+<div class="qna_page">
+    <a href="#" th:if="${inquiryPageResponseDTO.prev}" th:attr="data-page=${inquiryPageResponseDTO.start - 1}">&lt;</a>
+    <th:block th:each="num : ${#numbers.sequence(inquiryPageResponseDTO.start, inquiryPageResponseDTO.end)}">
+        <a href="#" th:attr="data-page=${num}" th:class="${num == inquiryPageResponseDTO.pg ? 'current' : 'num'}" th:text="${num}">1</a>
+    </th:block>
+    <a href="#" th:if="${inquiryPageResponseDTO.next}" th:attr="data-page=${inquiryPageResponseDTO.end + 1}">&gt;</a>
+</div>
