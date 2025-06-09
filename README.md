@@ -144,7 +144,10 @@ src/
 
 [프로젝트 보고서](https://fish-fahrenheit-662.notion.site/3-2044ffb4f47b8077815cebd4aa81672e?source=copy_link)
 
+
+# 내가 구현한 기능
 ## 1️⃣ 목표: 상품 목록 페이지 구현
+![롯데-ON-2조](https://github.com/user-attachments/assets/1959b35c-418d-4bc4-b29c-d1e4c5d9da84)
 
 롯데ON의 상품 목록 페이지는  
 **카테고리별 베스트 상품(최근 3개월 판매량 TOP10)** 과  
