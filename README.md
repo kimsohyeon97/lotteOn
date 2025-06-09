@@ -45,11 +45,8 @@ Github
 AWS |
 
 ## ERD
+![image](https://github.com/user-attachments/assets/1603ea76-11ef-45f5-b52e-116cb11c5b27)
 
-> ERD 설계도
-> 
-
-![image.png](attachment:f010d540-d339-4b8a-95bd-57ab134a4206:image.png)
 
 ## 상품 URI 구조
 
