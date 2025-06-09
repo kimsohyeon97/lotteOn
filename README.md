@@ -180,6 +180,8 @@ src/
 <br><br>
 
 ## 2️⃣ 상품 상세 페이지 구현 – AJAX 통합 UX, 쿠폰·장바구니 기능, Mixed Content 보안 대응
+![상품상세보기-롯데On](https://github.com/user-attachments/assets/1294f908-3d68-4c3f-8600-b8acf88f3804)
+
 
 롯데ON의 상품 상세 페이지는  
 **상품 정보, 리뷰·문의·교환/반품, 쿠폰, 장바구니, 광고 기능을**  
