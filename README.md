@@ -12,37 +12,26 @@
 ![슬라이드1.JPG.png](https://github.com/user-attachments/assets/f4b11f38-3385-4749-b78f-3af00e3aee7f)
 
 
-| 유형 | 구분 | 서비스 정보 |
-| --- | --- | --- |
-| SW | OS | Window10 |
-|  | Browser | Chrome 137.0.7151.41 |
-|  | WAS | Apache Tomcat 10.1.39 |
-|  | Framework | Spring Boot 3.0.4 |
-|  | Language | Java 17 |
-|  | Front | HTML5, CSS3, JavaScript(ES6), jQuery 3.1 |
-|  | Library | mysql-connector-j - 8.3.0
-querydsl-jpa - 5.1.0
-commons-io - 2.14.0
-thumbnailator - 0.4.14
-spring-boot-starter-thymeleaf: 타임리프
-spring-boot-starter-data-jpa : JPA
-mybatis-spring-boot-starter:3.0.4 : mybatis
-spring-boot-starter-data-redis : redis
-spring-boot-starter-security : 스프링 시큐리티
-spring-boot-starter-mail : 메일
-thymeleaf-extras-springsecurity6 : 타임리프 문법
-lombok : 롬복
-org.modelmapper:modelmapper:3.2.2 : modelmapper
-spring-boot-starter-oauth2-client : 소셜로그인
-jasypt-spring-boot-starter:3.0.5 : 암호화 라이브러리 |
-|  | DBMS | MySQL 8.0
-Redis 8.0.0 |
-|  | Tool | ntelliJ IDEA 2024.3.4.1
-MySQL Workbench 8.0
-HeidSQL 12.10
-Git 2.47.1
-Github
-AWS |
+| 항목 | 내용 |
+|------|------|
+| **OS** | Windows 10 |
+| **Browser** | Chrome 137.0.7151.41 |
+| **WAS** | Apache Tomcat 10.1.39 |
+| **Framework** | Spring Boot 3.0.4 |
+| **Language** | Java 17 |
+| **Front-end** | HTML5, CSS3, JavaScript(ES6), jQuery 3.1 |
+| **DBMS** | MySQL 8.0, Redis 8.0.0 |
+| **IDE & Tools** | IntelliJ IDEA 2024, MySQL Workbench, HeidiSQL, Git, GitHub, AWS |
+| **Library & Modules** |  
+- `mysql-connector-j`  
+- `querydsl-jpa`  
+- `commons-io`, `thumbnailator`  
+- `spring-boot-starter-*`: thymeleaf, data-jpa, security, mail, redis, oauth2-client  
+- `modelmapper`, `lombok`, `jasypt-spring-boot-starter`  
+- `mybatis-spring-boot-starter`  
+- `thymeleaf-extras-springsecurity6` |
+
+---
 
 ## ERD
 ![image](https://github.com/user-attachments/assets/1603ea76-11ef-45f5-b52e-116cb11c5b27)
