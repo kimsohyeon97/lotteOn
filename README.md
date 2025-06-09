@@ -144,6 +144,14 @@ src/
 
 [프로젝트 보고서](https://fish-fahrenheit-662.notion.site/3-2044ffb4f47b8077815cebd4aa81672e?source=copy_link)
 
+
+## 시연 동영상 링크
+<p align="left">
+  <a href="https://youtu.be/gVVp2Rey7m4?si=Eac93dnpeyJEuUuo" target="_blank">
+    <img alt="Watch Demo Video" src="https://img.shields.io/badge/YouTube-Demo%20Video-red?style=for-the-badge&logo=youtube&logoColor=white" height="28"/>
+  </a>
+</p>
+
 <br><br><br><br>
 
 # 내가 구현한 기능
