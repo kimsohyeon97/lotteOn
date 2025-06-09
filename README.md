@@ -9,10 +9,6 @@
 | **깃허브** | https://github.com/greenlotte6/lotte1-lotteon-project-team2 |
 
 ## 아키텍처 및 서비스 정보
-
-> 애플리케이션 아키텍처 구조 작성, 서비스 정보 작성
-> 
-
 ![슬라이드1.JPG.png](https://github.com/user-attachments/assets/f4b11f38-3385-4749-b78f-3af00e3aee7f)
 
 
