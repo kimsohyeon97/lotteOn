@@ -7,6 +7,7 @@
 | **배경 및 목적** | 본 프로젝트는 쇼핑몰의 기본 기능 개발을 목표로 실제 업무와 유사한 환경에서 설계 및 구현을 함을 목표로 한다.
 | **배포 주소** | https://lotteon.store/ |
 | **깃허브** | https://github.com/greenlotte6/lotte1-lotteon-project-team2 |
+| **노션 코드리뷰** | https://fish-fahrenheit-662.notion.site/3-2044ffb4f47b8077815cebd4aa81672e?source=copy_link |
 
 ## 아키텍처 및 서비스 정보
 ![슬라이드1.JPG.png](https://github.com/user-attachments/assets/f4b11f38-3385-4749-b78f-3af00e3aee7f)
@@ -140,11 +141,6 @@ src/
 
 ```
 
-## 프로젝트 보고서
-
-[프로젝트 보고서](https://fish-fahrenheit-662.notion.site/3-2044ffb4f47b8077815cebd4aa81672e?source=copy_link)
-
-
 ## 시연 동영상 링크
 <p align="left">
   <a href="https://youtu.be/gVVp2Rey7m4?si=Eac93dnpeyJEuUuo" target="_blank">
@@ -155,6 +151,7 @@ src/
 <br><br><br><br>
 
 # 내가 구현한 기능
+자세한 코드 리뷰 - https://fish-fahrenheit-662.notion.site/3-2044ffb4f47b8077815cebd4aa81672e?source=copy_link
 ## 1️⃣ 상품 목록 페이지 - Redis를 이용한 캐싱처리, Ajax 비동기처리로 SPA 구현
 ![롯데-ON-2조](https://github.com/user-attachments/assets/1959b35c-418d-4bc4-b29c-d1e4c5d9da84)
 
