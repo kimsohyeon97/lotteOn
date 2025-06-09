@@ -34,25 +34,25 @@
 ## 상품 URI 구조
 ```
 src/
-│── main/
+├── main/
 │   └── java/
 │       └── kr.co.lotteon/
 │           ├── controller/
 │           │   └── product/
 │           │       ├── ProductListController.java
-│			│	    │	├── ProductViewController.java
-│			│		│	├── ProductCouponController.java
-│			│		│   ├── ProductCartController.java
-│			│		│	├── ProductOrderController.java
-│			│		│	└── ProductOrderSubmitController.java
+│           │       ├── ProductViewController.java
+│           │       ├── ProductCouponController.java
+│           │       ├── ProductCartController.java
+│           │       ├── ProductOrderController.java
+│           │       └── ProductOrderSubmitController.java
 │           ├── service/
 │           │   ├── product/
 │           │   │   ├── ProductListService.java
 │           │   │   ├── ProductViewService.java
-│			│	│	├── ProductCouponService.java
-│			│	│	├── ProductCartService.java
-│			│	│	├── ProductOrderService.java
-│			│	│	├── OrderTransactionService.java
+│           │   │   ├── ProductCouponService.java
+│           │   │   ├── ProductCartService.java
+│           │   │   ├── ProductOrderService.java
+│           │   │   ├── OrderTransactionService.java
 │           │   │   └── ProductOrderSubmitService.java
 │           │   └── kakao/
 │           │       └── KakaoPayService.java
