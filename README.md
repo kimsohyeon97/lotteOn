@@ -49,8 +49,6 @@ AWS |
 
 
 ## 상품 URI 구조
-
-```
 src/
 │── main/
 │   └── java/
